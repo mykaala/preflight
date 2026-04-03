@@ -7,7 +7,7 @@ Docs: https://avwx.rest/api
 
 import httpx
 
-from backend.config import AVWX_TOKEN
+from config import AVWX_TOKEN
 
 _BASE = "https://avwx.rest/api"
 _HEADERS = {"Authorization": AVWX_TOKEN}

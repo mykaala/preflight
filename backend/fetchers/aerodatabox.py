@@ -13,7 +13,7 @@ from typing import TypedDict
 
 import httpx
 
-from backend.config import AERODATABOX_KEY
+from config import AERODATABOX_KEY
 
 _BASE = "https://aerodatabox.p.rapidapi.com"
 _HEADERS = {

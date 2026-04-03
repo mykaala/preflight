@@ -6,7 +6,7 @@ Docs: https://api.core.openaip.net/api
 
 import httpx
 
-from backend.config import OPENAIP_KEY
+from config import OPENAIP_KEY
 
 _BASE = "https://api.core.openaip.net/api"
 _HEADERS = {"x-openaip-api-key": OPENAIP_KEY}

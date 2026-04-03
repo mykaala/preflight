@@ -10,7 +10,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.routes import preflight
+from routes import preflight
 
 logging.basicConfig(level=logging.INFO)
 

@@ -16,13 +16,13 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
-from backend.fetchers.aerodatabox import fetch_aircraft, fetch_airport_delays, fetch_flight, fetch_flight_plan, fetch_inbound
-from backend.fetchers.avwx import fetch_metar, fetch_taf
-from backend.fetchers.aviationweather import fetch_pireps, fetch_sigmets
-from backend.fetchers.openaip import fetch_airspace
-from backend.fetchers.openmeteo import fetch_route_winds
-from backend.utils.airport_lookup import get_airport_by_iata, get_airport_by_municipality
-from backend.utils.airport_timezones import get_timezone_by_iata
+from fetchers.aerodatabox import fetch_aircraft, fetch_airport_delays, fetch_flight, fetch_flight_plan, fetch_inbound
+from fetchers.avwx import fetch_metar, fetch_taf
+from fetchers.aviationweather import fetch_pireps, fetch_sigmets
+from fetchers.openaip import fetch_airspace
+from fetchers.openmeteo import fetch_route_winds
+from utils.airport_lookup import get_airport_by_iata, get_airport_by_municipality
+from utils.airport_timezones import get_timezone_by_iata
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

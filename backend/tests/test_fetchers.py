@@ -84,7 +84,7 @@ def _header(title: str) -> None:
 
 async def test_fetch_flight() -> bool:
     _header(f"AeroDataBox — fetch_flight({FLIGHT_NUMBER}, {FLIGHT_DATE})")
-    from backend.fetchers.aerodatabox import fetch_flight
+    from fetchers.aerodatabox import fetch_flight
     try:
         result = await fetch_flight(FLIGHT_NUMBER, FLIGHT_DATE)
         _state["flight"] = result
@@ -98,7 +98,7 @@ async def test_fetch_flight() -> bool:
 
 async def test_fetch_inbound() -> bool:
     _header(f"AeroDataBox — fetch_inbound({FLIGHT_NUMBER})")
-    from backend.fetchers.aerodatabox import fetch_inbound
+    from fetchers.aerodatabox import fetch_inbound
     try:
         result = await fetch_inbound(FLIGHT_NUMBER, FLIGHT_DATE)
         if result is None:
@@ -115,7 +115,7 @@ async def test_fetch_inbound() -> bool:
 
 def test_airport_lookup() -> bool:
     _header("airport_lookup — OMDB + KJFK")
-    from backend.utils.airport_lookup import get_airport_by_icao
+    from utils.airport_lookup import get_airport_by_icao
     passed = True
     for icao in [ORIGIN_ICAO, DEST_ICAO]:
         result = get_airport_by_icao(icao)
@@ -131,7 +131,7 @@ def test_airport_lookup() -> bool:
 
 async def test_fetch_metar() -> bool:
     _header("AVWX — fetch_metar(OMDB) + fetch_metar(KJFK)")
-    from backend.fetchers.avwx import fetch_metar
+    from fetchers.avwx import fetch_metar
     passed = True
     for icao in [ORIGIN_ICAO, DEST_ICAO]:
         try:
@@ -145,7 +145,7 @@ async def test_fetch_metar() -> bool:
 
 async def test_fetch_taf() -> bool:
     _header(f"AVWX — fetch_taf({DEST_ICAO})")
-    from backend.fetchers.avwx import fetch_taf
+    from fetchers.avwx import fetch_taf
     try:
         result = await fetch_taf(DEST_ICAO)
         _pass(f"fetch_taf({DEST_ICAO})", result)
@@ -159,7 +159,7 @@ async def test_fetch_taf() -> bool:
 
 async def test_fetch_pireps() -> bool:
     _header("aviationweather — fetch_pireps (OMDB→KJFK corridor)")
-    from backend.fetchers.aviationweather import fetch_pireps
+    from fetchers.aviationweather import fetch_pireps
     try:
         result = await fetch_pireps(ORIGIN_LAT, ORIGIN_LON, DEST_LAT, DEST_LON)
         if not result:
@@ -175,7 +175,7 @@ async def test_fetch_pireps() -> bool:
 
 async def test_fetch_sigmets() -> bool:
     _header("aviationweather — fetch_sigmets()")
-    from backend.fetchers.aviationweather import fetch_sigmets
+    from fetchers.aviationweather import fetch_sigmets
     try:
         result = await fetch_sigmets()
         if not result:
@@ -194,7 +194,7 @@ async def test_fetch_sigmets() -> bool:
 
 async def test_fetch_airspace() -> bool:
     _header("OpenAIP — fetch_airspace (OMDB→KJFK bbox)")
-    from backend.fetchers.openaip import fetch_airspace
+    from fetchers.openaip import fetch_airspace
     # bbox with 3° padding
     try:
         result = await fetch_airspace(
@@ -218,7 +218,7 @@ async def test_fetch_airspace() -> bool:
 
 async def test_fetch_route_winds() -> bool:
     _header(f"Open-Meteo — fetch_route_winds ({len(EK203_WAYPOINTS)} waypoints)")
-    from backend.fetchers.openmeteo import fetch_route_winds
+    from fetchers.openmeteo import fetch_route_winds
     departure_time = datetime(
         FLIGHT_DATE.year, FLIGHT_DATE.month, FLIGHT_DATE.day,
         8, 30, tzinfo=timezone.utc,
@@ -245,7 +245,7 @@ async def test_fetch_route_winds() -> bool:
 
 async def test_preflight_route() -> bool:
     _header(f"ROUTE — GET /api/preflight/{FLIGHT_NUMBER}?date={FLIGHT_DATE}")
-    from backend.routes.preflight import get_preflight
+    from routes.preflight import get_preflight
     try:
         result = await get_preflight(
             flight_number=FLIGHT_NUMBER,
