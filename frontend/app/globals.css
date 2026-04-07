@@ -1,19 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --color-space-950: #020408;
-  --color-space-900: #050d18;
-  --color-space-800: #0a1628;
-  --color-space-700: #0f2040;
-  --color-space-600: #152a52;
+  /* ── Stitch "Flight Briefing App / Celestial Navigator" design tokens ── */
+  --color-surface:              #111318;
+  --color-surface-dim:          #111318;
+  --color-surface-low:          #1a1c20;
+  --color-surface-container:    #1e2024;
+  --color-surface-high:         #282a2e;
+  --color-surface-highest:      #333539;
+  --color-surface-bright:       #37393e;
+  --color-surface-lowest:       #0c0e12;
 
-  --color-accent-blue:  #378ADD;
-  --color-accent-teal:  #1D9E75;
-  --color-accent-amber: #EF9F27;
-  --color-accent-red:   #E24B4A;
+  --color-primary:              #aac7ff;
+  --color-primary-container:    #3e90ff;
+  --color-on-primary:           #003064;
 
-  --font-family-sans: var(--font-inter), Inter, sans-serif;
-  --font-family-mono: "JetBrains Mono", monospace;
+  --color-secondary:            #53e16f;
+  --color-secondary-container:  #05b046;
+  --color-on-secondary:         #003911;
+
+  --color-tertiary:             #ffb868;
+  --color-tertiary-container:   #ce7f00;
+  --color-on-tertiary:          #482900;
+
+  --color-error:                #ffb4ab;
+  --color-error-container:      #93000a;
+
+  --color-on-surface:           #e2e2e8;
+  --color-on-surface-variant:   #c0c6d6;
+  --color-outline:              #8b91a0;
+  --color-outline-variant:      #414754;
+
+  /* Legacy aliases */
+  --color-accent-blue:   #aac7ff;
+  --color-accent-teal:   #53e16f;
+  --color-accent-amber:  #ffb868;
+  --color-accent-red:    #ffb4ab;
+
+  --font-family-display: var(--font-manrope), Manrope, sans-serif;
+  --font-family-sans:    var(--font-inter), Inter, sans-serif;
+  --font-family-mono:    "JetBrains Mono", monospace;
 }
 
 * {
@@ -24,8 +50,8 @@
 
 html, body {
   height: 100%;
-  background: #000;
-  color: #fff;
+  background: #111318;
+  color: #e2e2e8;
   font-family: var(--font-family-sans);
   overflow: hidden;
 }
@@ -34,7 +60,7 @@ html, body {
 div[style*="overflow"i] {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-color: rgba(170, 199, 255, 0.1) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -46,10 +72,10 @@ div[style*="overflow"i] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(170, 199, 255, 0.1);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(170, 199, 255, 0.18);
 }

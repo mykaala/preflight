@@ -208,7 +208,7 @@ export default function AtmosphereView({ routeWinds, originIata, destIata }: Pro
 
 			ctx.save();
 			ctx.globalAlpha = alpha;
-			ctx.strokeStyle = spd > 88 ? '#EF9F27' : 'rgba(255,255,255,0.7)';
+			ctx.strokeStyle = spd > 88 ? '#ffb874' : 'rgba(217, 227, 242, 0.7)';
 			ctx.lineWidth = 1;
 
 			ctx.beginPath();

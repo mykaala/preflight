@@ -176,19 +176,19 @@ interface PreflightData {
 
 function statusColor(status: string): string {
 	const s = status.toLowerCase();
-	if (s.includes('cancel')) return '#E24B4A';
-	if (s.includes('depart') || s.includes('airborne') || s.includes('enroute')) return '#378ADD';
-	if (s.includes('arrived') || s.includes('landed')) return '#1D9E75';
-	if (s.includes('gate') || s.includes('boarding') || s.includes('closed')) return '#EF9F27';
-	return 'rgba(255,255,255,0.45)';
+	if (s.includes('cancel')) return '#ffb4ab';
+	if (s.includes('depart') || s.includes('airborne') || s.includes('enroute')) return '#aac7ff';
+	if (s.includes('arrived') || s.includes('landed')) return '#53e16f';
+	if (s.includes('gate') || s.includes('boarding') || s.includes('closed')) return '#ffb874';
+	return '#c0c6d6';
 }
 
 function flightRulesColor(fr: string): string {
-	if (fr === 'VFR') return '#1D9E75';
-	if (fr === 'MVFR') return '#EF9F27';
-	if (fr === 'IFR') return '#E24B4A';
-	if (fr === 'LIFR') return '#cc44cc';
-	return 'rgba(255,255,255,0.45)';
+	if (fr === 'VFR') return '#53e16f';
+	if (fr === 'MVFR') return '#ffb874';
+	if (fr === 'IFR') return '#ffb4ab';
+	if (fr === 'LIFR') return '#cf6679';
+	return '#c0c6d6';
 }
 
 function parseUtc(utcStr: string): Date | null {
@@ -258,12 +258,12 @@ function fmtClouds(metar: MetarData): string {
 }
 
 function tbColor(intensity: string | null): string {
-	if (!intensity) return 'rgba(255,255,255,0.4)';
+	if (!intensity) return '#8b91a0';
 	const i = intensity.toUpperCase();
-	if (i.includes('SEV') || i.includes('EXTM')) return '#E24B4A';
-	if (i.includes('MOD')) return '#EF9F27';
-	if (i.includes('LGT')) return '#1D9E75';
-	return 'rgba(255,255,255,0.4)';
+	if (i.includes('SEV') || i.includes('EXTM')) return '#ffb4ab';
+	if (i.includes('MOD')) return '#ffb874';
+	if (i.includes('LGT')) return '#53e16f';
+	return '#8b91a0';
 }
 
 function gcWaypoints(oLat: number, oLng: number, dLat: number, dLng: number, n = 64): [number, number][] {
@@ -362,36 +362,37 @@ function flightDuration(dep: string, arr: string): string {
 // ── Design constants ───────────────────────────────────────────────────────────
 
 const INTER = 'var(--font-family-sans)';
+const DISPLAY = 'var(--font-family-display)';
 const MONO = 'var(--font-family-mono)';
 
-// TYPE SCALE
+// TYPE SCALE — Stitch "Flight Briefing App / Celestial Navigator"
 const TYPE = {
 	PRIMARY: {
-		fontFamily: MONO,
+		fontFamily: DISPLAY,
 		fontSize: '28px',
-		fontWeight: 600,
+		fontWeight: 700,
 		lineHeight: 1.2,
-		color: '#fff'
+		color: '#e2e2e8'
 	} as React.CSSProperties,
 	PRIMARY_VALUE: {
-		fontFamily: INTER,
+		fontFamily: DISPLAY,
 		fontSize: '16px',
 		fontWeight: 600,
 		lineHeight: 1.3,
-		color: 'rgba(255,255,255,0.95)'
+		color: '#e2e2e8'
 	} as React.CSSProperties,
 	SECONDARY: {
 		fontFamily: INTER,
 		fontSize: '14px',
 		fontWeight: 600,
 		lineHeight: 1.4,
-		color: 'rgba(255,255,255,0.85)'
+		color: '#e2e2e8'
 	} as React.CSSProperties,
 	LABEL: {
 		fontFamily: INTER,
-		fontSize: '12px',
+		fontSize: '11px',
 		fontWeight: 500,
-		color: 'rgba(255,255,255,0.45)',
+		color: '#8b91a0',
 		textTransform: 'uppercase',
 		letterSpacing: '0.12em'
 	} as React.CSSProperties,
@@ -400,28 +401,28 @@ const TYPE = {
 		fontSize: '13px',
 		fontWeight: 400,
 		lineHeight: 1.6,
-		color: 'rgba(255,255,255,0.65)'
+		color: '#c0c6d6'
 	} as React.CSSProperties,
 	META: {
 		fontFamily: MONO,
-		fontSize: '12px',
+		fontSize: '11px',
 		fontWeight: 400,
-		color: 'rgba(255,255,255,0.4)'
+		color: '#8b91a0'
 	} as React.CSSProperties,
 	SUBTEXT: {
 		fontFamily: INTER,
 		fontSize: '12px',
 		fontWeight: 400,
-		color: 'rgba(255,255,255,0.5)'
+		color: '#c0c6d6'
 	} as React.CSSProperties
 };
 
-// GLASS CARD SYSTEM
+// GLASS CARD SYSTEM — tonal layering, no hard borders (Flight Briefing App palette)
 const GLASS_BASE: React.CSSProperties = {
-	background: 'rgba(255, 255, 255, 0.04)',
-	backdropFilter: 'blur(16px)',
-	WebkitBackdropFilter: 'blur(16px)',
-	border: '1px solid rgba(255, 255, 255, 0.08)',
+	background: '#1a1c20',
+	backdropFilter: 'blur(20px) saturate(180%)',
+	WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+	border: '1px solid rgba(255, 255, 255, 0.05)',
 	borderRadius: '20px'
 };
 
@@ -429,7 +430,7 @@ const CARD: React.CSSProperties = {
 	...GLASS_BASE,
 	padding: '16px 18px',
 	marginBottom: '12px',
-	boxShadow: '0 4px 16px rgba(0, 0, 0, 0.24), inset 0 1px 1px rgba(255, 255, 255, 0.08)',
+	boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(170, 199, 255, 0.05)',
 	transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
 };
 
@@ -437,17 +438,17 @@ const CARD_ELEVATED: React.CSSProperties = {
 	...GLASS_BASE,
 	padding: '18px 20px',
 	marginBottom: '12px',
-	background: 'rgba(255, 255, 255, 0.06)',
-	border: '1px solid rgba(255, 255, 255, 0.12)',
-	boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1)'
+	background: '#282a2e',
+	border: '1px solid rgba(170, 199, 255, 0.08)',
+	boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(170, 199, 255, 0.07)'
 };
 
 const getCardHoverStyle = (isHovered: boolean): React.CSSProperties => ({
 	...CARD,
 	...(isHovered && {
-		background: 'rgba(255, 255, 255, 0.08)',
-		border: '1px solid rgba(255, 255, 255, 0.12)',
-		boxShadow: '0 12px 40px rgba(0, 0, 0, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.12)',
+		background: '#1e2024',
+		border: '1px solid rgba(170, 199, 255, 0.1)',
+		boxShadow: '0 12px 40px rgba(0, 0, 0, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
 		transform: 'translateY(-2px)'
 	})
 });
@@ -461,23 +462,23 @@ const PANEL: React.CSSProperties = {
 
 const DIVIDER: React.CSSProperties = {
 	height: '1px',
-	background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%)',
+	background: 'linear-gradient(90deg, rgba(170,199,255,0) 0%, rgba(170,199,255,0.08) 50%, rgba(170,199,255,0) 100%)',
 	margin: '16px 0'
 };
 
-// ── Semantic colors ────────────────────────────────────────────────────────────
-const C_GREEN = '#10b981';
-const C_YELLOW = '#f59e0b';
-const C_ORANGE = '#f97316';
-const C_BLUE = '#3b82f6';
-const C_RED = '#ef4444';
+// ── Semantic colors — Stitch "Flight Briefing App" design tokens ───────────────
+const C_GREEN = '#53e16f';
+const C_YELLOW = '#ffb868';
+const C_ORANGE = '#ffb868';
+const C_BLUE = '#aac7ff';
+const C_RED = '#ffb4ab';
 
 const COLORS = {
-	green: { base: '#10b981', light: 'rgba(16, 185, 129, 0.2)', pale: 'rgba(16, 185, 129, 0.08)' },
-	yellow: { base: '#f59e0b', light: 'rgba(245, 158, 11, 0.2)', pale: 'rgba(245, 158, 11, 0.08)' },
-	orange: { base: '#f97316', light: 'rgba(249, 115, 22, 0.2)', pale: 'rgba(249, 115, 22, 0.08)' },
-	blue: { base: '#3b82f6', light: 'rgba(59, 130, 246, 0.2)', pale: 'rgba(59, 130, 246, 0.08)' },
-	red: { base: '#ef4444', light: 'rgba(239, 68, 68, 0.2)', pale: 'rgba(239, 68, 68, 0.08)' }
+	green:  { base: '#53e16f',  light: 'rgba(83, 225, 111, 0.15)', pale: 'rgba(83, 225, 111, 0.07)' },
+	yellow: { base: '#ffb868',  light: 'rgba(255, 184, 104, 0.15)', pale: 'rgba(255, 184, 104, 0.07)' },
+	orange: { base: '#ffb868',  light: 'rgba(255, 184, 104, 0.15)', pale: 'rgba(255, 184, 104, 0.07)' },
+	blue:   { base: '#aac7ff',  light: 'rgba(170, 199, 255, 0.15)', pale: 'rgba(170, 199, 255, 0.07)' },
+	red:    { base: '#ffb4ab',  light: 'rgba(255, 180, 171, 0.15)', pale: 'rgba(255, 180, 171, 0.07)' }
 };
 
 // ── Reusable Components ────────────────────────────────────────────────────────
@@ -633,7 +634,7 @@ function windLabel(speed: number | null): string {
 }
 
 function visibilityColor(condition: string): string {
-	if (condition === 'Very low visibility') return '#E24B4A'; // Red - critical
+	if (condition === 'Very low visibility') return '#ffb4ab'; // Red - critical
 	if (condition === 'Poor visibility') return '#FF9500'; // Orange - significant
 	if (condition === 'Reduced visibility') return '#FFB84D'; // Light orange - marginal
 	if (condition === 'Overcast') return '#9BA5B5'; // Gray
@@ -643,11 +644,11 @@ function visibilityColor(condition: string): string {
 }
 
 function windColor(label: string): string {
-	if (label === 'Calm') return '#1D9E75'; // Green - calm
+	if (label === 'Calm') return '#53e16f'; // Green - calm
 	if (label === 'Light winds') return '#6BA3FF'; // Blue - light
 	if (label === 'Moderate winds') return '#FFB84D'; // Orange - moderate
 	if (label === 'Fresh winds') return '#FF9500'; // Dark orange - fresh
-	if (label === 'Strong winds') return '#E24B4A'; // Red - strong
+	if (label === 'Strong winds') return '#ffb4ab'; // Red - strong
 	return '#B8C4D4'; // Gray - unknown
 }
 
@@ -918,10 +919,10 @@ function LeftPanel({
 				flexShrink: 0,
 				overflowY: 'auto',
 				padding: '24px 20px',
-				background: 'rgba(0, 0, 0, 0.3)',
-				backdropFilter: 'blur(8px)',
-				WebkitBackdropFilter: 'blur(8px)',
-				borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+				background: 'rgba(17, 19, 24, 0.6)',
+				backdropFilter: 'blur(20px)',
+				WebkitBackdropFilter: 'blur(20px)',
+				borderRight: '1px solid rgba(255, 255, 255, 0.04)',
 				position: 'relative',
 				scrollbarWidth: 'none',
 				msOverflowStyle: 'none'
@@ -1125,9 +1126,9 @@ function LeftPanel({
 							{inbound.flightNumber.replace(' ', '')}
 						</span>
 						{inbound.delayMinutes > 0 ? (
-							<span style={{ color: '#E24B4A' }}> · {inbound.delayMinutes} min late</span>
+							<span style={{ color: '#ffb4ab' }}> · {inbound.delayMinutes} min late</span>
 						) : (
-							<span style={{ color: '#1D9E75' }}> · on time</span>
+							<span style={{ color: '#53e16f' }}> · on time</span>
 						)}
 					</div>
 				)}
@@ -1193,9 +1194,9 @@ function MapView({ data }: { data: PreflightData }) {
 
 		map.on('style.load', () => {
 			map.setFog({
-				color: '#020408',
-				'high-color': '#050d18',
-				'space-color': '#020408',
+				color: '#111318',
+				'high-color': '#0c0e12',
+				'space-color': '#111318',
 				'horizon-blend': 0.04,
 				'star-intensity': 0.6
 			});
@@ -1217,7 +1218,7 @@ function MapView({ data }: { data: PreflightData }) {
 				type: 'line',
 				source: 'route',
 				paint: {
-					'line-color': '#378ADD',
+					'line-color': '#aac7ff',
 					'line-width': 1.5,
 					'line-dasharray': [3, 4],
 					'line-opacity': 0.75
@@ -1246,7 +1247,7 @@ function MapView({ data }: { data: PreflightData }) {
 			// 		},
 			// 		paint: {
 			// 			'text-color': 'rgba(226, 75, 74, 0.6)',
-			// 			'text-halo-color': '#020408',
+			// 			'text-halo-color': '#111318',
 			// 			'text-halo-width': 1.5
 			// 		}
 			// 	});
@@ -1276,10 +1277,10 @@ function MapView({ data }: { data: PreflightData }) {
 				source: 'airports',
 				paint: {
 					'circle-radius': 5,
-					'circle-color': '#378ADD',
+					'circle-color': '#aac7ff',
 					'circle-opacity': 0.9,
 					'circle-stroke-width': 6,
-					'circle-stroke-color': '#378ADD',
+					'circle-stroke-color': '#aac7ff',
 					'circle-stroke-opacity': 0.15
 				}
 			});
@@ -1295,8 +1296,8 @@ function MapView({ data }: { data: PreflightData }) {
 					'text-offset': [0, -0.8]
 				},
 				paint: {
-					'text-color': '#378ADD',
-					'text-halo-color': '#020408',
+					'text-color': '#aac7ff',
+					'text-halo-color': '#111318',
 					'text-halo-width': 2
 				}
 			});
@@ -1349,7 +1350,7 @@ function MapView({ data }: { data: PreflightData }) {
 				style={{
 					width: '100%',
 					height: '100%',
-					background: '#020408',
+					background: '#111318',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center'
@@ -1589,14 +1590,12 @@ function RightPanel({
 		if (n.includes('light')) return C_YELLOW;
 		return C_GREEN;
 	})();
-	const turbPillColor: 'red' | 'orange' | 'yellow' | 'green' =
+	const turbPillColor: 'red' | 'yellow' | 'green' =
 		turbulenceColor === C_RED
 			? 'red'
-			: turbulenceColor === C_ORANGE
-				? 'orange'
-				: turbulenceColor === C_YELLOW
-					? 'yellow'
-					: 'green';
+			: turbulenceColor === C_YELLOW
+				? 'yellow'
+				: 'green';
 
 	// Jet stream
 	const avgJetSpeed = (() => {
@@ -1700,10 +1699,10 @@ function RightPanel({
 				flexShrink: 0,
 				overflow: 'hidden',
 				padding: '24px 20px 16px',
-				background: 'rgba(0, 0, 0, 0.3)',
-				backdropFilter: 'blur(8px)',
-				WebkitBackdropFilter: 'blur(8px)',
-				borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+				background: 'rgba(17, 19, 24, 0.6)',
+				backdropFilter: 'blur(20px)',
+				WebkitBackdropFilter: 'blur(20px)',
+				borderLeft: '1px solid rgba(255, 255, 255, 0.04)',
 				position: 'relative',
 				boxSizing: 'border-box'
 			}}
@@ -2332,9 +2331,10 @@ function StarCanvas() {
 }
 
 function LoadingScreen({ flightNumber }: { flightNumber: string }) {
-	const [msgIdx, setMsgIdx] = useState(() => Math.floor(Math.random() * LOADING_MESSAGES.length));
+	const [msgIdx, setMsgIdx] = useState(0);
 
 	useEffect(() => {
+		setMsgIdx(Math.floor(Math.random() * LOADING_MESSAGES.length));
 		const id = setInterval(() => setMsgIdx((i) => (i + 1) % LOADING_MESSAGES.length), 2800);
 		return () => clearInterval(id);
 	}, []);
@@ -2349,7 +2349,7 @@ function LoadingScreen({ flightNumber }: { flightNumber: string }) {
 				position: 'fixed',
 				inset: 0,
 				zIndex: 1000,
-				background: '#020408',
+				background: '#111318',
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
@@ -2366,8 +2366,8 @@ function LoadingScreen({ flightNumber }: { flightNumber: string }) {
 					width: 44,
 					height: 44,
 					borderRadius: '50%',
-					border: '1.5px solid rgba(55,138,221,0.12)',
-					borderTopColor: 'rgba(55,138,221,0.8)',
+					border: '1.5px solid rgba(170,199,255,0.12)',
+					borderTopColor: 'rgba(170,199,255,0.8)',
 					position: 'relative',
 					zIndex: 1
 				}}
@@ -2483,7 +2483,7 @@ function FlightPageInner() {
 				style={{
 					width: '100vw',
 					height: '100vh',
-					background: '#020408',
+					background: '#111318',
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
@@ -2491,7 +2491,7 @@ function FlightPageInner() {
 					gap: '12px'
 				}}
 			>
-				<div style={{ fontFamily: MONO, fontSize: '14px', color: '#E24B4A', letterSpacing: '0.04em' }}>
+				<div style={{ fontFamily: MONO, fontSize: '14px', color: '#ffb4ab', letterSpacing: '0.04em' }}>
 					{flightNumber} · {(error as Error).message}
 				</div>
 				<button
@@ -2522,28 +2522,242 @@ function FlightPageInner() {
 		setIsDragging(true);
 	};
 
+	const { flight, origin, destination } = data;
+
+	const sideNavItems = [
+		{ icon: 'assessment', label: 'Overview', active: true },
+		{ icon: 'cyclone', label: 'Meteorology', active: false },
+		{ icon: 'explore', label: 'Navigation', active: false },
+		{ icon: 'weight', label: 'Payload', active: false },
+		{ icon: 'shield', label: 'Safety', active: false }
+	];
+
 	return (
 		<div
 			style={{
 				width: '100vw',
 				height: '100vh',
-				background: '#020408',
-				backgroundImage: 'radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-				backgroundAttachment: 'fixed',
+				background: '#111318',
 				display: 'flex',
-				flexDirection: 'row',
+				flexDirection: 'column',
 				overflow: 'hidden',
 				fontFamily: INTER,
 				userSelect: isDragging ? 'none' : 'auto',
 				cursor: isDragging ? 'col-resize' : 'default'
 			}}
 		>
-			<LeftPanel data={data} width={leftWidth} onResizeStart={handleLeftMouseDown} />
-			<div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
-				<MapView data={data} />
-				<FlightSummaryCard data={data} />
+			{/* ── Top Nav ── */}
+			<header
+				style={{
+					position: 'fixed',
+					top: 0,
+					left: 0,
+					right: 0,
+					zIndex: 50,
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					padding: '0 32px',
+					height: 80,
+					flexShrink: 0,
+					background: 'rgba(17,19,24,0.6)',
+					backdropFilter: 'blur(20px) saturate(180%)',
+					WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+					boxShadow: '0 20px 50px rgba(10,132,255,0.08)'
+				}}
+			>
+				<div
+					style={{
+						fontFamily: DISPLAY,
+						fontSize: 16,
+						fontWeight: 800,
+						letterSpacing: '0.22em',
+						color: '#aac7ff',
+						textTransform: 'uppercase'
+					}}
+				>
+					Preflight
+				</div>
+				<nav style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
+					{['Briefing', 'Weather', 'Routes', 'Fleet'].map((item, i) => (
+						<span
+							key={item}
+							style={{
+								fontFamily: DISPLAY,
+								fontSize: 14,
+								fontWeight: 500,
+								color: i === 0 ? '#aac7ff' : '#c0c6d6',
+								borderBottom: i === 0 ? '2px solid #aac7ff' : '2px solid transparent',
+								paddingBottom: 2,
+								cursor: 'default',
+								letterSpacing: '-0.01em'
+							}}
+						>
+							{item}
+						</span>
+					))}
+				</nav>
+				<div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+					{['notifications', 'settings'].map((icon) => (
+						<button
+							key={icon}
+							onClick={icon === 'notifications' ? undefined : undefined}
+							style={{
+								background: 'none',
+								border: 'none',
+								cursor: 'pointer',
+								padding: 8,
+								borderRadius: '50%',
+								color: '#aac7ff',
+								display: 'flex',
+								alignItems: 'center',
+								transition: 'background 0.2s'
+							}}
+							onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+							onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+						>
+							<span className='material-symbols-outlined' style={{ fontSize: 22 }}>{icon}</span>
+						</button>
+					))}
+				</div>
+			</header>
+
+			{/* ── Body (sidebar + panels) ── */}
+			<div style={{ display: 'flex', flexDirection: 'row', flex: 1, marginTop: 80, overflow: 'hidden' }}>
+				{/* ── Sidebar ── */}
+				<aside
+					style={{
+						width: 256,
+						flexShrink: 0,
+						height: '100%',
+						display: 'flex',
+						flexDirection: 'column',
+						padding: '24px 0',
+						background: 'rgba(17,19,24,0.4)',
+						backdropFilter: 'blur(16px)',
+						WebkitBackdropFilter: 'blur(16px)',
+						borderRight: '1px solid rgba(255,255,255,0.04)'
+					}}
+				>
+					{/* Flight identifier */}
+					<div style={{ padding: '0 24px', marginBottom: 32 }}>
+						<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+							<div
+								style={{
+									width: 40,
+									height: 40,
+									borderRadius: 10,
+									background: 'rgba(62,144,255,0.15)',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									color: '#aac7ff',
+									flexShrink: 0
+								}}
+							>
+								<span className='material-symbols-outlined' style={{ fontSize: 20 }}>rocket_launch</span>
+							</div>
+							<div>
+								<div style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 700, color: '#e2e2e8' }}>
+									{flight.flightNumber.replace(' ', '')}
+								</div>
+								<div
+									style={{
+										fontFamily: INTER,
+										fontSize: 10,
+										color: '#c0c6d6',
+										textTransform: 'uppercase',
+										letterSpacing: '0.12em',
+										marginTop: 2
+									}}
+								>
+									{origin.iata}–{destination.iata}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Nav items */}
+					<nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+						{sideNavItems.map(({ icon, label, active }) => (
+							<div
+								key={label}
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: 16,
+									padding: '12px 24px',
+									background: active
+										? 'linear-gradient(90deg, rgba(170,199,255,0.12) 0%, transparent 100%)'
+										: 'transparent',
+									borderLeft: active ? '3px solid #aac7ff' : '3px solid transparent',
+									color: active ? '#aac7ff' : '#c0c6d6',
+									cursor: 'default',
+									transition: 'all 0.2s'
+								}}
+								onMouseEnter={(e) => {
+									if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)';
+								}}
+								onMouseLeave={(e) => {
+									if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent';
+								}}
+							>
+								<span className='material-symbols-outlined' style={{ fontSize: 20 }}>{icon}</span>
+								<span
+									style={{
+										fontFamily: INTER,
+										fontSize: 11,
+										fontWeight: 500,
+										textTransform: 'uppercase',
+										letterSpacing: '0.1em'
+									}}
+								>
+									{label}
+								</span>
+							</div>
+						))}
+					</nav>
+
+					{/* Generate PDF */}
+					<div style={{ padding: '0 24px' }}>
+						<button
+							style={{
+								width: '100%',
+								padding: '12px',
+								background: 'rgba(51,53,57,0.3)',
+								color: '#aac7ff',
+								border: '1px solid rgba(65,71,84,0.3)',
+								borderRadius: 8,
+								fontFamily: INTER,
+								fontSize: 11,
+								fontWeight: 700,
+								textTransform: 'uppercase',
+								letterSpacing: '0.12em',
+								cursor: 'pointer',
+								transition: 'all 0.2s'
+							}}
+							onMouseEnter={(e) => {
+								(e.currentTarget as HTMLElement).style.background = 'rgba(51,53,57,0.6)';
+							}}
+							onMouseLeave={(e) => {
+								(e.currentTarget as HTMLElement).style.background = 'rgba(51,53,57,0.3)';
+							}}
+						>
+							Generate PDF
+						</button>
+					</div>
+				</aside>
+
+				{/* ── Main 3-panel area ── */}
+				<div style={{ flex: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden', minWidth: 0 }}>
+					<LeftPanel data={data} width={leftWidth} onResizeStart={handleLeftMouseDown} />
+					<div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
+						<MapView data={data} />
+						<FlightSummaryCard data={data} />
+					</div>
+					<RightPanel data={data} width={rightWidth} onResizeStart={handleRightMouseDown} />
+				</div>
 			</div>
-			<RightPanel data={data} width={rightWidth} onResizeStart={handleRightMouseDown} />
 		</div>
 	);
 }

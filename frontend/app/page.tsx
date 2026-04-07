@@ -19,30 +19,10 @@ const LOADING_MESSAGES = [
 
 // ── Date parser ────────────────────────────────────────────────────────────────
 const MONTH_MAP: Record<string, number> = {
-	jan: 0,
-	january: 0,
-	feb: 1,
-	february: 1,
-	mar: 2,
-	march: 2,
-	apr: 3,
-	april: 3,
-	may: 4,
-	jun: 5,
-	june: 5,
-	jul: 6,
-	july: 6,
-	aug: 7,
-	august: 7,
-	sep: 8,
-	sept: 8,
-	september: 8,
-	oct: 9,
-	october: 9,
-	nov: 10,
-	november: 10,
-	dec: 11,
-	december: 11
+	jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2,
+	apr: 3, april: 3, may: 4, jun: 5, june: 5, jul: 6, july: 6,
+	aug: 7, august: 7, sep: 8, sept: 8, september: 8,
+	oct: 9, october: 9, nov: 10, november: 10, dec: 11, december: 11
 };
 
 function resolveYear(month: number, day: number, today: Date, explicitYear?: number): number {
@@ -60,42 +40,25 @@ function parseFlexDate(raw: string, today: Date): Date | null {
 
 	const isoMatch = raw.trim().match(/^(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})$/);
 	if (isoMatch) {
-		const y = parseInt(isoMatch[1]),
-			m = parseInt(isoMatch[2]) - 1,
-			d = parseInt(isoMatch[3]);
+		const y = parseInt(isoMatch[1]), m = parseInt(isoMatch[2]) - 1, d = parseInt(isoMatch[3]);
 		const dt = new Date(y, m, d);
 		return isNaN(dt.getTime()) ? null : dt;
 	}
 
 	if (parts.length === 2 && /^\d{1,2}$/.test(parts[0]) && /^\d{1,2}$/.test(parts[1])) {
-		const a = parseInt(parts[0]),
-			b = parseInt(parts[1]);
+		const a = parseInt(parts[0]), b = parseInt(parts[1]);
 		let month: number, day: number;
-		if (a <= 12 && b > 12) {
-			month = a - 1;
-			day = b;
-		} else if (a > 12 && b <= 12) {
-			month = b - 1;
-			day = a;
-		} else {
-			month = a - 1;
-			day = b;
-		}
+		if (a <= 12 && b > 12) { month = a - 1; day = b; }
+		else if (a > 12 && b <= 12) { month = b - 1; day = a; }
+		else { month = a - 1; day = b; }
 		if (month < 0 || month > 11 || day < 1 || day > 31) return null;
 		return new Date(resolveYear(month, day, today), month, day);
 	}
 
 	if (parts.length === 3) {
-		for (const perm of [
-			[0, 1, 2],
-			[1, 0, 2],
-			[0, 2, 1],
-			[2, 0, 1]
-		] as [number, number, number][]) {
+		for (const perm of [[0,1,2],[1,0,2],[0,2,1],[2,0,1]] as [number,number,number][]) {
 			const [yi, mi, di] = perm;
-			const yv = parseInt(parts[yi]),
-				mv = MONTH_MAP[parts[mi]],
-				dv = parseInt(parts[di]);
+			const yv = parseInt(parts[yi]), mv = MONTH_MAP[parts[mi]], dv = parseInt(parts[di]);
 			if (yv >= 2020 && yv <= 2099 && mv !== undefined && !isNaN(dv) && dv >= 1 && dv <= 31)
 				return new Date(yv, mv, dv);
 		}
@@ -110,14 +73,11 @@ function parseFlexDate(raw: string, today: Date): Date | null {
 	}
 
 	if (parts.length === 2) {
-		for (const [mi, di] of [
-			[0, 1],
-			[1, 0]
-		] as [number, number][]) {
+		for (const [mi, di] of [[0,1],[1,0]] as [number,number][]) {
 			const dayStr = parts[di].replace(/(?<=\d)(st|nd|rd|th)$/, '');
-			const mv = MONTH_MAP[parts[mi]],
-				dv = parseInt(dayStr);
-			if (mv !== undefined && !isNaN(dv) && dv >= 1 && dv <= 31) return new Date(resolveYear(mv, dv, today), mv, dv);
+			const mv = MONTH_MAP[parts[mi]], dv = parseInt(dayStr);
+			if (mv !== undefined && !isNaN(dv) && dv >= 1 && dv <= 31)
+				return new Date(resolveYear(mv, dv, today), mv, dv);
 		}
 	}
 
@@ -127,10 +87,8 @@ function parseFlexDate(raw: string, today: Date): Date | null {
 }
 
 function fmtDate(d: Date): string {
-	return d
-		.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-		.replace(',', '')
-		.toUpperCase();
+	return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+		.replace(',', '').toUpperCase();
 }
 
 function toISODate(d: Date): string {
@@ -165,7 +123,6 @@ function StarCanvas() {
 			freq: Math.random() * 0.008 + 0.003
 		}));
 
-		// a handful of slightly brighter accent stars
 		const bright = Array.from({ length: 12 }, () => ({
 			x: Math.random() * window.innerWidth,
 			y: Math.random() * window.innerHeight,
@@ -192,7 +149,6 @@ function StarCanvas() {
 
 			for (const s of bright) {
 				const a = s.alpha * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(s.phase + t * s.freq)));
-				// soft glow around bright stars
 				const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
 				grad.addColorStop(0, `rgba(180,210,255,${a.toFixed(3)})`);
 				grad.addColorStop(1, 'rgba(180,210,255,0)');
@@ -244,7 +200,7 @@ function LoadingScreen({ flight }: { flight: string }) {
 				position: 'fixed',
 				inset: 0,
 				zIndex: 1000,
-				background: '#020408',
+				background: '#111318',
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
@@ -254,28 +210,37 @@ function LoadingScreen({ flight }: { flight: string }) {
 		>
 			<StarCanvas />
 
-			{/* Orbital ring spinner */}
-			<motion.div
-				animate={{ rotate: 360 }}
-				transition={{ duration: 1.4, repeat: Infinity, ease: 'linear' }}
+			{/* Progress indicator */}
+			<div
 				style={{
-					width: 44,
-					height: 44,
-					borderRadius: '50%',
-					border: '1.5px solid rgba(55,138,221,0.12)',
-					borderTopColor: 'rgba(55,138,221,0.8)',
+					width: 192,
+					height: 2,
+					background: 'rgba(170,199,255,0.12)',
+					borderRadius: 999,
+					overflow: 'hidden',
 					position: 'relative',
 					zIndex: 1
 				}}
-			/>
+			>
+				<motion.div
+					animate={{ x: ['-100%', '100%'] }}
+					transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+					style={{
+						position: 'absolute',
+						inset: 0,
+						background: 'linear-gradient(90deg, transparent, #aac7ff, transparent)',
+						boxShadow: '0 0 10px rgba(170,199,255,0.5)'
+					}}
+				/>
+			</div>
 
 			<div
 				style={{
-					fontFamily: 'var(--font-family-sans)',
+					fontFamily: 'var(--font-family-display)',
 					fontSize: 26,
-					fontWeight: 600,
-					letterSpacing: '0.1em',
-					color: 'rgba(255,255,255,0.88)',
+					fontWeight: 700,
+					letterSpacing: '-0.02em',
+					color: '#e2e2e8',
 					position: 'relative',
 					zIndex: 1
 				}}
@@ -291,10 +256,10 @@ function LoadingScreen({ flight }: { flight: string }) {
 					exit={{ opacity: 0, y: -6 }}
 					transition={{ duration: 0.28, ease: 'easeOut' }}
 					style={{
-						fontFamily: 'var(--font-family-mono)',
+						fontFamily: 'var(--font-family-sans)',
 						fontSize: 10,
-						letterSpacing: '0.12em',
-						color: 'rgba(255,255,255,0.55)',
+						letterSpacing: '0.2em',
+						color: '#c0c6d6',
 						textTransform: 'uppercase',
 						position: 'relative',
 						zIndex: 1
@@ -311,8 +276,9 @@ function LoadingScreen({ flight }: { flight: string }) {
 					fontFamily: 'var(--font-family-sans)',
 					fontSize: 9,
 					letterSpacing: '0.2em',
-					color: 'rgba(255,255,255,0.1)',
-					zIndex: 1
+					color: 'rgba(170,199,255,0.15)',
+					zIndex: 1,
+					textTransform: 'uppercase'
 				}}
 			>
 				Preflight
@@ -321,24 +287,30 @@ function LoadingScreen({ flight }: { flight: string }) {
 	);
 }
 
-// ── Page ───────────────────────────────────────────────────────────────────────
-const containerVariants = {
-	hidden: { opacity: 0 },
-	show: {
-		opacity: 1,
-		transition: { staggerChildren: 0.1, delayChildren: 0.15 }
-	}
+// ── Styles ─────────────────────────────────────────────────────────────────────
+const DISPLAY = 'var(--font-family-display)';
+const SANS = 'var(--font-family-sans)';
+const MONO = 'var(--font-family-mono)';
+
+const glassPanel: React.CSSProperties = {
+	backdropFilter: 'blur(20px) saturate(180%)',
+	WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+	background: 'rgba(51, 53, 57, 0.4)',
+	border: '1px solid rgba(255, 255, 255, 0.05)',
+	borderRadius: 12
 };
 
+// ── Page ───────────────────────────────────────────────────────────────────────
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
+const containerVariants = {
+	hidden: { opacity: 0 },
+	show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } }
+};
+
 const itemVariants = {
-	hidden: { opacity: 0, y: 24 },
-	show: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: 0.7, ease: EASE_OUT_EXPO }
-	}
+	hidden: { opacity: 0, y: 20 },
+	show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_OUT_EXPO } }
 };
 
 export default function Home() {
@@ -390,14 +362,8 @@ export default function Home() {
 	}
 
 	function handleDateKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-		if (e.key === 'Enter') {
-			e.preventDefault();
-			navigate();
-		}
-		if (e.key === 'Escape') {
-			setDateValue('');
-			dateInputRef.current?.blur();
-		}
+		if (e.key === 'Enter') { e.preventDefault(); navigate(); }
+		if (e.key === 'Escape') { setDateValue(''); dateInputRef.current?.blur(); }
 	}
 
 	return (
@@ -407,338 +373,556 @@ export default function Home() {
 			</AnimatePresence>
 
 			<div
-				style={{ position: 'fixed', inset: 0, background: '#020408', overflow: 'hidden' }}
+				style={{ position: 'fixed', inset: 0, background: '#111318', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
 				onMouseMove={handleMouseMove}
 			>
 				{/* Starfield */}
 				<StarCanvas />
 
-				{/* Mouse-tracked drifting nebula */}
+				{/* Mouse-tracked nebula */}
 				<motion.div
 					style={{
 						position: 'absolute',
-						width: '100vw',
-						height: '70vh',
-						left: '-10vw',
-						top: '10vh',
-						background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(55,138,221,0.055) 0%, transparent 70%)',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: '140%',
+						height: '140%',
+						background: 'radial-gradient(circle at center, rgba(62,144,255,0.08) 0%, rgba(17,19,24,1) 70%)',
 						pointerEvents: 'none',
 						x: nebulaX,
 						y: nebulaY
 					}}
 				/>
 
-				{/* Static central bloom */}
-				<div
+				{/* ── Top Navigation ── */}
+				<motion.nav
+					initial={{ opacity: 0, y: -8 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, ease: 'easeOut' }}
 					style={{
-						position: 'absolute',
-						inset: 0,
-						background: 'radial-gradient(ellipse 55% 40% at 50% 52%, rgba(55,138,221,0.04) 0%, transparent 65%)',
-						pointerEvents: 'none'
-					}}
-				/>
-
-				{/* Horizon vignette */}
-				<div
-					style={{
-						position: 'absolute',
-						inset: 0,
-						background: 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(2,4,8,0.7) 100%)',
-						pointerEvents: 'none'
-					}}
-				/>
-
-				{/* Content */}
-				<motion.div
-					variants={containerVariants}
-					initial='hidden'
-					animate='show'
-					style={{
-						position: 'absolute',
-						inset: 0,
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						right: 0,
+						zIndex: 50,
 						display: 'flex',
-						flexDirection: 'column',
+						justifyContent: 'space-between',
 						alignItems: 'center',
-						justifyContent: 'center'
+						padding: '0 32px',
+						height: 80,
+						background: 'rgba(17,19,24,0.6)',
+						backdropFilter: 'blur(20px) saturate(180%)',
+						WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+						boxShadow: '0 20px 50px rgba(10,132,255,0.08)'
 					}}
 				>
-					{/* Wordmark */}
-					<motion.div variants={itemVariants} style={{ textAlign: 'center', marginBottom: 36 }}>
-						<div
-							style={{
-								fontFamily: 'var(--font-family-sans)',
-								fontSize: 'clamp(36px, 5.5vw, 68px)',
-								fontWeight: 700,
-								letterSpacing: '0.28em',
-								color: 'rgba(255,255,255,0.88)',
-								textShadow: '0 0 120px rgba(55,138,221,0.35)',
-								lineHeight: 1,
-								marginLeft: '0.28em' // optical centering for letter-spacing
-							}}
-						>
-							Preflight
-						</div>
-						<div
-							style={{
-								fontFamily: 'var(--font-family-mono)',
-								fontSize: 9,
-								letterSpacing: '0.3em',
-								color: 'rgba(255,255,255,0.4)',
-								marginTop: 40,
-								marginLeft: '0.3em'
-							}}
-						>
-							FLIGHT INTELLIGENCE
-						</div>
-					</motion.div>
+					<div
+						style={{
+							fontFamily: DISPLAY,
+							fontSize: 16,
+							fontWeight: 800,
+							letterSpacing: '0.22em',
+							color: '#aac7ff',
+							textTransform: 'uppercase'
+						}}
+					>
+						Preflight
+					</div>
+					<div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+						{[
+							{ label: 'Briefing', active: true },
+							{ label: 'Weather', active: false },
+							{ label: 'Routes', active: false },
+							{ label: 'Fleet', active: false }
+						].map(({ label, active }) => (
+							<span
+								key={label}
+								style={{
+									fontFamily: DISPLAY,
+									fontSize: 14,
+									fontWeight: 500,
+									letterSpacing: '-0.01em',
+									color: active ? '#aac7ff' : '#c0c6d6',
+									borderBottom: active ? '2px solid #aac7ff' : '2px solid transparent',
+									paddingBottom: 2,
+									cursor: 'default',
+									transition: 'color 0.2s'
+								}}
+							>
+								{label}
+							</span>
+						))}
+					</div>
+					<div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+						{['notifications', 'settings'].map((icon) => (
+							<button
+								key={icon}
+								style={{
+									background: 'none',
+									border: 'none',
+									cursor: 'pointer',
+									padding: 8,
+									borderRadius: '50%',
+									color: '#c0c6d6',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									transition: 'background 0.2s'
+								}}
+								onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+								onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+							>
+								<span className='material-symbols-outlined' style={{ fontSize: 20 }}>{icon}</span>
+							</button>
+						))}
+					</div>
+				</motion.nav>
 
-					{/* Card */}
-					<motion.div variants={itemVariants} style={{ width: '100%', maxWidth: 380, padding: '0 20px' }}>
+				{/* ── Main Content ── */}
+				<main
+					style={{
+						flex: 1,
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						position: 'relative',
+						padding: '80px 24px 80px',
+						zIndex: 10
+					}}
+				>
+					<motion.div
+						variants={containerVariants}
+						initial='hidden'
+						animate='show'
+						style={{
+							width: '100%',
+							maxWidth: 672,
+							textAlign: 'center',
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							gap: 0
+						}}
+					>
+						{/* ── Header ── */}
+						<motion.header variants={itemVariants} style={{ marginBottom: 48 }}>
+							<h1
+								style={{
+									fontFamily: DISPLAY,
+									fontSize: 'clamp(42px, 6vw, 72px)',
+									fontWeight: 800,
+									letterSpacing: '-0.03em',
+									color: '#ffffff',
+									textShadow: '0 0 80px rgba(62,144,255,0.2)',
+									lineHeight: 1.05,
+									marginBottom: 16
+								}}
+							>
+								Preflight Briefing
+							</h1>
+							<p
+								style={{
+									fontFamily: SANS,
+									fontSize: 18,
+									fontWeight: 300,
+									color: '#c0c6d6',
+									lineHeight: 1.6,
+									maxWidth: 480,
+									margin: '0 auto'
+								}}
+							>
+								Understand your flight before you take off — weather, turbulence, and what to expect along the way.
+							</p>
+						</motion.header>
+
+						{/* ── Search Card ── */}
 						<motion.div
-							whileHover={{
-								boxShadow:
-									'0 0 0 1px rgba(55,138,221,0.12), 0 48px 96px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)'
-							}}
-							transition={{ duration: 0.3 }}
+							variants={itemVariants}
 							style={{
-								background: 'rgba(255,255,255,0.028)',
-								border: '1px solid rgba(255,255,255,0.07)',
-								borderTop: '1px solid rgba(255,255,255,0.1)',
-								borderRadius: 20,
-								padding: '22px 22px 22px',
-								backdropFilter: 'blur(48px)',
-								boxShadow:
-									'0 0 0 1px rgba(0,0,0,0.4), 0 32px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)'
+								...glassPanel,
+								padding: 8,
+								width: '100%',
+								maxWidth: 560,
+								boxShadow: '0 40px 60px rgba(170,199,255,0.05)',
+								marginBottom: 16
 							}}
 						>
-							{/* Card header */}
-							<div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-								<motion.div
-									animate={{ opacity: [0.6, 1, 0.6] }}
-									transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-									style={{
-										width: 5,
-										height: 5,
-										borderRadius: '50%',
-										background: '#378ADD',
-										boxShadow: '0 0 8px 2px rgba(55,138,221,0.5)',
-										flexShrink: 0
-									}}
-								/>
-								<span
-									style={{
-										fontFamily: 'var(--font-family-mono)',
-										fontSize: 9,
-										letterSpacing: '0.2em',
-										color: 'rgba(255,255,255,0.5)',
-										textTransform: 'uppercase'
-									}}
-								>
-									FLIGHT LOOKUP
-								</span>
-							</div>
+							<div style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
+								{/* Flight Number Input */}
+								<div style={{ flex: 1, position: 'relative' }}>
+									<div
+										style={{
+											position: 'absolute',
+											left: 16,
+											top: '50%',
+											transform: 'translateY(-50%)',
+											pointerEvents: 'none',
+											color: 'rgba(170,199,255,0.5)',
+											display: 'flex',
+											alignItems: 'center'
+										}}
+									>
+										<span className='material-symbols-outlined' style={{ fontSize: 20 }}>flight_takeoff</span>
+									</div>
+									<input
+										type='text'
+										value={flightValue}
+										onChange={(e) => setFlightValue(e.target.value)}
+										onKeyDown={handleFlightKeyDown}
+										onFocus={() => setFlightFocused(true)}
+										onBlur={() => setFlightFocused(false)}
+										placeholder='Flight Number (e.g. AA100)'
+										autoComplete='off'
+										autoCorrect='off'
+										autoCapitalize='characters'
+										spellCheck={false}
+										style={{
+											width: '100%',
+											background: flightFocused ? 'rgba(40,42,46,0.8)' : 'rgba(40,42,46,0.4)',
+											border: 'none',
+											borderRadius: 8,
+											outline: flightFocused ? '2px solid rgba(170,199,255,0.4)' : '2px solid transparent',
+											fontFamily: SANS,
+											fontSize: 14,
+											fontWeight: 500,
+											color: '#e2e2e8',
+											padding: '20px 16px 20px 48px',
+											transition: 'all 200ms ease',
+											boxSizing: 'border-box',
+											letterSpacing: '0.06em',
+											textTransform: 'uppercase'
+										}}
+									/>
+								</div>
 
-							{/* Flight number input */}
-							<div style={{ marginBottom: 10, position: 'relative' }}>
-								<motion.div
-									animate={{ opacity: flightFocused ? 1 : 0 }}
-									transition={{ duration: 0.2 }}
-									style={{
-										position: 'absolute',
-										inset: -1,
-										borderRadius: 12,
-										boxShadow: '0 0 0 2px rgba(55,138,221,0.25)',
-										pointerEvents: 'none'
-									}}
-								/>
-								<input
-									type='text'
-									value={flightValue}
-									onChange={(e) => setFlightValue(e.target.value)}
-									onKeyDown={handleFlightKeyDown}
-									onFocus={() => setFlightFocused(true)}
-									onBlur={() => setFlightFocused(false)}
-									placeholder='Flight number'
-									autoComplete='off'
-									autoCorrect='off'
-									autoCapitalize='characters'
-									spellCheck={false}
-									style={{
-										width: '100%',
-										background: flightFocused ? 'rgba(55,138,221,0.06)' : 'rgba(255,255,255,0.035)',
-										border: `1px solid ${flightFocused ? 'rgba(55,138,221,0.3)' : 'rgba(255,255,255,0.07)'}`,
-										borderRadius: 11,
-										outline: 'none',
-										fontFamily: 'var(--font-family-sans)',
-										fontSize: 15,
-										fontWeight: 500,
-										color: '#fff',
-										padding: '13px 14px',
-										transition: 'all 200ms ease',
-										boxSizing: 'border-box',
-										letterSpacing: '0.04em'
-									}}
-								/>
+								{/* Date Input */}
+								<div style={{ flex: 1, position: 'relative' }}>
+									<div
+										style={{
+											position: 'absolute',
+											left: 16,
+											top: '50%',
+											transform: 'translateY(-50%)',
+											pointerEvents: 'none',
+											color: 'rgba(170,199,255,0.5)',
+											display: 'flex',
+											alignItems: 'center'
+										}}
+									>
+										<span className='material-symbols-outlined' style={{ fontSize: 20 }}>calendar_today</span>
+									</div>
+									<input
+										ref={dateInputRef}
+										type='text'
+										value={dateValue}
+										onChange={(e) => setDateValue(e.target.value)}
+										onKeyDown={handleDateKeyDown}
+										onFocus={() => setDateFocused(true)}
+										onBlur={() => setDateFocused(false)}
+										placeholder='Today'
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+										style={{
+											width: '100%',
+											background: dateFocused ? 'rgba(40,42,46,0.8)' : 'rgba(40,42,46,0.4)',
+											border: 'none',
+											borderRadius: 8,
+											outline: dateFocused
+												? dateValue && !dateValid
+													? '2px solid rgba(255,180,171,0.4)'
+													: '2px solid rgba(170,199,255,0.4)'
+												: '2px solid transparent',
+											fontFamily: SANS,
+											fontSize: 14,
+											fontWeight: 500,
+											color: dateValue && !dateValid ? '#ffb4ab' : '#e2e2e8',
+											padding: '20px 16px 20px 48px',
+											transition: 'all 200ms ease',
+											boxSizing: 'border-box',
+											letterSpacing: '0.03em'
+										}}
+									/>
+								</div>
 							</div>
+						</motion.div>
 
-							{/* Date input */}
-							<div style={{ marginBottom: 6, position: 'relative' }}>
-								<motion.div
-									animate={{ opacity: dateFocused ? 1 : 0 }}
-									transition={{ duration: 0.2 }}
-									style={{
-										position: 'absolute',
-										inset: -1,
-										borderRadius: 12,
-										boxShadow:
-											dateValue && !dateValid ? '0 0 0 2px rgba(226,75,74,0.25)' : '0 0 0 2px rgba(55,138,221,0.25)',
-										pointerEvents: 'none'
-									}}
-								/>
-								<input
-									ref={dateInputRef}
-									type='text'
-									value={dateValue}
-									onChange={(e) => setDateValue(e.target.value)}
-									onKeyDown={handleDateKeyDown}
-									onFocus={() => setDateFocused(true)}
-									onBlur={() => setDateFocused(false)}
-									placeholder='Departure date  —  optional'
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-									style={{
-										width: '100%',
-										background: dateFocused ? 'rgba(55,138,221,0.06)' : 'rgba(255,255,255,0.035)',
-										border: `1px solid ${
-											dateValue && !dateValid
-												? 'rgba(226,75,74,0.4)'
-												: dateFocused
-													? 'rgba(55,138,221,0.3)'
-													: 'rgba(255,255,255,0.07)'
-										}`,
-										borderRadius: 11,
-										outline: 'none',
-										fontFamily: 'var(--font-family-sans)',
-										fontSize: 15,
-										fontWeight: 500,
-										color: dateValue && !dateValid ? 'rgba(226,75,74,0.85)' : '#fff',
-										padding: '13px 14px',
-										transition: 'all 200ms ease',
-										boxSizing: 'border-box'
-									}}
-								/>
-							</div>
-
-							{/* Date feedback */}
+						{/* Date validation feedback */}
+						<div style={{ height: 20, marginBottom: 8, width: '100%', maxWidth: 560, textAlign: 'left', paddingLeft: 2 }}>
 							<AnimatePresence mode='wait'>
 								{dateValid ? (
-									<motion.div
+									<motion.span
 										key='valid'
-										initial={{ opacity: 0, y: -4 }}
-										animate={{ opacity: 1, y: 0 }}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
 										exit={{ opacity: 0 }}
-										transition={{ duration: 0.2 }}
-										style={{
-											fontFamily: 'var(--font-family-mono)',
-											fontSize: 10,
-											letterSpacing: '0.08em',
-											color: 'rgba(255,255,255,0.6)',
-											minHeight: 20,
-											padding: '0 2px',
-											marginBottom: 14
-										}}
+										style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.08em', color: '#c0c6d6' }}
 									>
 										{fmtDate(parsedDate!)}
-									</motion.div>
+									</motion.span>
 								) : dateValue && !dateValid ? (
-									<motion.div
+									<motion.span
 										key='invalid'
-										initial={{ opacity: 0, y: -4 }}
-										animate={{ opacity: 1, y: 0 }}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
 										exit={{ opacity: 0 }}
-										transition={{ duration: 0.2 }}
-										style={{
-											fontFamily: 'var(--font-family-mono)',
-											fontSize: 10,
-											letterSpacing: '0.08em',
-											color: 'rgba(226,75,74,0.9)',
-											minHeight: 20,
-											padding: '0 2px',
-											marginBottom: 14
-										}}
+										style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.08em', color: '#ffb4ab' }}
 									>
 										UNRECOGNIZED DATE
-									</motion.div>
-								) : (
-									<div key='empty' style={{ minHeight: 20, marginBottom: 14 }} />
-								)}
+									</motion.span>
+								) : null}
 							</AnimatePresence>
+						</div>
 
-							{/* Submit button */}
+						{/* ── CTA Button ── */}
+						<motion.div variants={itemVariants} style={{ marginBottom: 32 }}>
 							<motion.button
 								onClick={navigate}
 								disabled={!flightReady}
-								whileTap={flightReady ? { scale: 0.975 } : {}}
-								whileHover={flightReady ? { scale: 1.01 } : {}}
+								whileTap={flightReady ? { scale: 0.97 } : {}}
+								whileHover={flightReady ? { scale: 1.02 } : {}}
 								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 								style={{
-									width: '100%',
+									display: 'inline-flex',
+									alignItems: 'center',
+									gap: 12,
+									padding: '20px 48px',
 									background: flightReady
-										? 'linear-gradient(160deg, rgba(55,138,221,0.9) 0%, rgba(30,100,185,0.95) 100%)'
-										: 'rgba(255,255,255,0.05)',
-									border: flightReady ? '1px solid rgba(55,138,221,0.4)' : '1px solid rgba(255,255,255,0.06)',
-									borderRadius: 11,
-									fontFamily: 'var(--font-family-sans)',
-									fontSize: 15,
-									fontWeight: 600,
-									color: flightReady ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.18)',
-									padding: '13px',
+										? 'linear-gradient(135deg, #aac7ff 0%, #3e90ff 100%)'
+										: 'rgba(51,53,57,0.6)',
+									border: 'none',
+									borderRadius: 8,
+									fontFamily: DISPLAY,
+									fontSize: 16,
+									fontWeight: 700,
+									color: flightReady ? '#003064' : '#414754',
 									cursor: flightReady ? 'pointer' : 'default',
-									letterSpacing: '-0.01em',
 									boxShadow: flightReady
-										? '0 0 24px rgba(55,138,221,0.2), inset 0 1px 0 rgba(255,255,255,0.12)'
+										? '0 10px 30px rgba(62,144,255,0.3), 0 0 0 1px rgba(170,199,255,0.2)'
 										: 'none',
-									transition: 'all 220ms ease',
-									outline: 'none'
+									transition: 'all 250ms ease',
+									outline: 'none',
+									letterSpacing: '0.01em'
 								}}
 							>
-								{flightReady ? (
-									<motion.span
-										key='ready'
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{ duration: 0.2 }}
-									>
-										Look up flight
-									</motion.span>
-								) : (
-									<span>Look up flight</span>
+								<span>View Flight Briefing</span>
+								{flightReady && (
+									<span className='material-symbols-outlined' style={{ fontSize: 20 }}>arrow_forward</span>
 								)}
 							</motion.button>
 						</motion.div>
+
+						{/* ── Status Badges ── */}
+						<motion.div
+							variants={itemVariants}
+							style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 32 }}
+						>
+							<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+								<span
+									style={{
+										fontFamily: SANS,
+										fontSize: 10,
+										letterSpacing: '0.15em',
+										color: '#c0c6d6',
+										textTransform: 'uppercase'
+									}}
+								>
+									Global Coverage
+								</span>
+								<span
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										gap: 6,
+										fontFamily: SANS,
+										fontSize: 11,
+										fontWeight: 500,
+										color: '#53e16f'
+									}}
+								>
+									<span
+										style={{
+											width: 6,
+											height: 6,
+											borderRadius: '50%',
+											background: '#53e16f',
+											boxShadow: '0 0 8px rgba(83,225,111,0.8)'
+										}}
+									/>
+									LIVE NETWORK ACTIVE
+								</span>
+							</div>
+
+							<div style={{ width: 1, height: 32, background: 'rgba(65,71,84,0.5)' }} />
+
+							<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+								<span
+									style={{
+										fontFamily: SANS,
+										fontSize: 10,
+										letterSpacing: '0.15em',
+										color: '#c0c6d6',
+										textTransform: 'uppercase'
+									}}
+								>
+									Data Precision
+								</span>
+								<span
+									style={{
+										fontFamily: SANS,
+										fontSize: 11,
+										fontWeight: 500,
+										color: '#e2e2e8',
+										letterSpacing: '0.03em',
+										textTransform: 'uppercase'
+									}}
+								>
+									99.9% METAR Accuracy
+								</span>
+							</div>
+						</motion.div>
+
+						{/* Hints */}
+						<motion.div
+							variants={itemVariants}
+							style={{
+								marginTop: 16,
+								fontFamily: MONO,
+								fontSize: 10,
+								color: '#414754',
+								letterSpacing: '0.1em'
+							}}
+						>
+							EK203 · QR007 · APR 15 · MAY 28
+						</motion.div>
 					</motion.div>
 
-					{/* Hints */}
+					{/* ── Floating Side Cards ── */}
 					<motion.div
-						variants={itemVariants}
+						initial={{ opacity: 0, x: -16 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ duration: 0.7, delay: 0.6, ease: EASE_OUT_EXPO }}
 						style={{
-							textAlign: 'center',
-							fontFamily: 'var(--font-family-mono)',
-							fontSize: 10,
-							color: 'rgba(255,255,255,0.35)',
-							letterSpacing: '0.1em',
-							marginTop: 22
+							position: 'absolute',
+							bottom: 80,
+							left: 48,
+							display: 'none'
 						}}
+						className='floating-card-left'
 					>
-						EK203 · QR007 · APR 15 · MAY 28
+						<div
+							style={{
+								...glassPanel,
+								background: 'rgba(30,32,36,0.4)',
+								padding: '16px 20px',
+								width: 192,
+								display: 'flex',
+								flexDirection: 'column',
+								gap: 12
+							}}
+						>
+							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<span style={{ fontFamily: SANS, fontSize: 10, color: '#c0c6d6', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+									Wind Speed
+								</span>
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: '#aac7ff' }}>air</span>
+							</div>
+							<div style={{ fontFamily: DISPLAY, fontSize: 28, fontWeight: 800, color: '#e2e2e8', lineHeight: 1 }}>
+								420<span style={{ fontSize: 12, opacity: 0.5, marginLeft: 4 }}>KTS</span>
+							</div>
+							<div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 999, overflow: 'hidden' }}>
+								<div style={{ height: '100%', width: '66%', background: '#aac7ff', borderRadius: 999 }} />
+							</div>
+						</div>
 					</motion.div>
-				</motion.div>
+
+					<motion.div
+						initial={{ opacity: 0, x: 16 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ duration: 0.7, delay: 0.7, ease: EASE_OUT_EXPO }}
+						style={{
+							position: 'absolute',
+							top: 128,
+							right: 48,
+							display: 'none'
+						}}
+						className='floating-card-right'
+					>
+						<div
+							style={{
+								...glassPanel,
+								background: 'rgba(30,32,36,0.4)',
+								padding: '16px 20px',
+								width: 192,
+								display: 'flex',
+								flexDirection: 'column',
+								gap: 8
+							}}
+						>
+							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<span style={{ fontFamily: SANS, fontSize: 10, color: '#c0c6d6', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+									Visibility
+								</span>
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: '#53e16f' }}>visibility</span>
+							</div>
+							<div style={{ fontFamily: DISPLAY, fontSize: 28, fontWeight: 800, color: '#e2e2e8', lineHeight: 1 }}>MAX</div>
+							<div style={{ fontFamily: SANS, fontSize: 9, color: '#53e16f', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+								Atmospheric Optimal
+							</div>
+						</div>
+					</motion.div>
+				</main>
+
+				{/* ── Footer ── */}
+				<footer
+					style={{
+						position: 'relative',
+						zIndex: 20,
+						padding: '24px 48px',
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						borderTop: '1px solid rgba(255,255,255,0.04)',
+						background: '#111318',
+						flexShrink: 0
+					}}
+				>
+					<p style={{ fontFamily: SANS, fontSize: 10, letterSpacing: '0.15em', color: '#c0c6d6', textTransform: 'uppercase' }}>
+						© 2024 PREFLIGHT SYSTEMS. ALL RIGHTS RESERVED.
+					</p>
+					<div style={{ display: 'flex', gap: 32 }}>
+						{['Terms of Flight', 'Technical Specs', 'Support'].map((link) => (
+							<a
+								key={link}
+								href='#'
+								style={{
+									fontFamily: SANS,
+									fontSize: 10,
+									letterSpacing: '0.15em',
+									color: '#c0c6d6',
+									textDecoration: 'none',
+									textTransform: 'uppercase',
+									opacity: 0.8,
+									transition: 'opacity 0.2s'
+								}}
+								onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+								onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.8')}
+							>
+								{link}
+							</a>
+						))}
+					</div>
+				</footer>
 			</div>
 
 			<style>{`
-				input::placeholder { color: rgba(255,255,255,0.16); font-weight: 400; }
+				input::placeholder { color: rgba(192,198,214,0.4); font-weight: 400; }
 				input { -webkit-font-smoothing: antialiased; }
+				@media (min-width: 1280px) {
+					.floating-card-left { display: block !important; }
+					.floating-card-right { display: block !important; }
+				}
 			`}</style>
 		</>
 	);
