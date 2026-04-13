@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AeroBrief | Initializing System</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-background": "#d9e3f2",
+                  "on-primary-fixed": "#001a41",
+                  "tertiary-fixed-dim": "#ffb874",
+                  "surface-tint": "#adc6ff",
+                  "primary-fixed-dim": "#adc6ff",
+                  "error": "#ffb4ab",
+                  "inverse-surface": "#d9e3f2",
+                  "surface-container-low": "#131c27",
+                  "surface-variant": "#2c3641",
+                  "on-secondary-container": "#003a11",
+                  "secondary": "#53e16f",
+                  "tertiary-fixed": "#ffdcbf",
+                  "secondary-fixed": "#72fe88",
+                  "inverse-on-surface": "#28313c",
+                  "surface-dim": "#0a141e",
+                  "outline-variant": "#44474d",
+                  "surface-container-lowest": "#050f19",
+                  "primary-container": "#00183c",
+                  "tertiary": "#ffb874",
+                  "on-tertiary-fixed-variant": "#6a3b00",
+                  "on-secondary-fixed-variant": "#00531c",
+                  "on-surface-variant": "#c5c6cd",
+                  "on-secondary": "#003911",
+                  "on-tertiary": "#4b2800",
+                  "background": "#0a141e",
+                  "on-primary": "#002e69",
+                  "secondary-container": "#05b046",
+                  "on-secondary-fixed": "#002107",
+                  "secondary-fixed-dim": "#53e16f",
+                  "primary": "#adc6ff",
+                  "inverse-primary": "#005bc1",
+                  "on-primary-container": "#1a7dff",
+                  "on-tertiary-fixed": "#2d1600",
+                  "surface": "#0a141e",
+                  "on-error-container": "#ffdad6",
+                  "surface-container-high": "#212b36",
+                  "outline": "#8f9097",
+                  "on-surface": "#d9e3f2",
+                  "on-tertiary-container": "#bf6e00",
+                  "primary-fixed": "#d8e2ff",
+                  "surface-container-highest": "#2c3641",
+                  "surface-container": "#17202b",
+                  "surface-bright": "#303a45",
+                  "tertiary-container": "#291400",
+                  "error-container": "#93000a",
+                  "on-primary-fixed-variant": "#004493",
+                  "on-error": "#690005"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "fontFamily": {
+                  "headline": ["Manrope"],
+                  "body": ["Inter"],
+                  "label": ["Inter"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background: radial-gradient(circle at center, #131c27 0%, #0a141e 100%);
+    }
+    .star-field {
+      background-image: radial-gradient(white, rgba(255,255,255,0) 2px);
+      background-size: 100px 100px;
+    }
+    .globe-glow {
+      box-shadow: 0 0 80px 20px rgba(173, 198, 255, 0.15);
+    }
+    .pulse-glow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+    .loading-line {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: dash 8s linear forwards;
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+<body class="font-body text-on-surface overflow-hidden h-screen w-screen flex flex-col items-center justify-center relative">
+<!-- Background Atmospheric Layer -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="absolute inset-0 opacity-20 star-field" data-alt="a subtle pattern of distant stars and cosmic dust against a deep midnight navy background"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px]"></div>
+</div>
+<!-- Central Visual Anchor -->
+<div class="relative z-10 flex flex-col items-center">
+<!-- Cinematic Globe Visualization -->
+<div class="relative w-80 h-80 md:w-96 md:h-96 mb-16">
+<div class="absolute inset-0 rounded-full globe-glow bg-surface-container-low border border-primary/10 overflow-hidden">
+<!-- The Globe Image -->
+<img alt="high-detail futuristic wireframe globe of earth with glowing blue data nodes and atmospheric lighting" class="w-full h-full object-cover opacity-60 mix-blend-lighten" data-alt="a high-tech holographic wireframe of the earth globe with glowing blue outlines and subtle data points on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCacf1d5YkeuhkfPs0HeCEyOg7InXAKq05wVPln0G4O6l7TLIp6atrmXMN92wNRlVFkNzBNw0qnp-vuIhJLOmAyJ2PuTRYGifkkM46xv9RMZwLZUKnMHy9Y1ZxRP6CXLs2EMrG1H8Hay7kxqy5X9GfV4hOCZJdb8ez9Uho5PEwnCfYqg3fzpMdHzhrcFxMEvzjlpYi8vT1m2ObczI2MVOYCWQeRU_Ye3taa2KOrXXezkyJL4m2uMP0bzJGyLrbWEBslI1oH3_VnRpS-"/>
+<!-- Animated Route Overlays -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 100 100">
+<path class="loading-line" d="M 30 70 Q 50 20 70 30" fill="none" stroke="#adc6ff" stroke-linecap="round" stroke-width="0.5"></path>
+<circle class="pulse-glow" cx="30" cy="70" fill="#53e16f" r="1"></circle>
+<circle cx="70" cy="30" fill="#adc6ff" r="1"></circle>
+</svg>
+</div>
+<!-- Atmosphere Ring -->
+<div class="absolute inset-[-20px] border border-primary/5 rounded-full pulse-glow"></div>
+<div class="absolute inset-[-40px] border border-primary/2 rounded-full opacity-30"></div>
+</div>
+<!-- Status Messaging Console -->
+<div class="flex flex-col items-center space-y-6 max-w-md text-center">
+<!-- Product Branding -->
+<div class="flex flex-col items-center mb-8">
+<h1 class="font-headline text-4xl font-extrabold tracking-tighter text-primary">AeroBrief</h1>
+<p class="text-xs font-label uppercase tracking-[0.3em] text-on-surface-variant opacity-60 mt-2">Precision Navigation System</p>
+</div>
+<!-- Progressive Messages (Simulated step via layout) -->
+<div class="space-y-4">
+<!-- Message 1: Active -->
+<div class="flex items-center justify-center space-x-3 transition-all duration-700">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label text-sm tracking-wide text-on-surface">Fetching route data...</span>
+</div>
+<!-- Message 2: Active/Processing -->
+<div class="flex items-center justify-center space-x-3 transition-all duration-1000 delay-500">
+<span class="material-symbols-outlined text-primary text-sm animate-pulse">sync</span>
+<span class="font-label text-sm tracking-wide text-on-surface">Analyzing weather conditions...</span>
+</div>
+<!-- Message 3: Upcoming -->
+<div class="flex items-center justify-center space-x-3 opacity-30">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">radio_button_unchecked</span>
+<span class="font-label text-sm tracking-wide text-on-surface">Mapping turbulence reports...</span>
+</div>
+<!-- Message 4: Upcoming -->
+<div class="flex items-center justify-center space-x-3 opacity-10">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">radio_button_unchecked</span>
+<span class="font-label text-sm tracking-wide text-on-surface">Preparing your briefing...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Navigation/Branding (Suppressed as per Shell Visibility Rule for Loading State) -->
+<!-- Ambient Light Effects in Corners -->
+<div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[150px] -translate-x-1/2 translate-y-1/2"></div>
+<div class="absolute top-0 right-0 w-64 h-64 bg-tertiary/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2"></div>
+<!-- Bottom Instrumentation Hint -->
+<div class="absolute bottom-12 w-full flex justify-center z-20">
+<div class="bg-surface-variant/40 backdrop-blur-xl px-6 py-2 rounded-full border border-outline-variant/15">
+<div class="flex items-center space-x-4">
+<div class="flex flex-col items-start">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline">System Load</span>
+<div class="w-32 h-1 bg-surface-container-highest rounded-full mt-1 overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div class="h-8 w-px bg-outline-variant/20"></div>
+<div class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">
+          Ver 4.2.0-Skyline
+        </div>
+</div>
+</div>
+</div>
+</body></html>

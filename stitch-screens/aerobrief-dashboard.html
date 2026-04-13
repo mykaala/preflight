@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AeroBrief | Flight Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#d9e3f2",
+                    "on-primary-fixed": "#001a41",
+                    "tertiary-fixed-dim": "#ffb874",
+                    "surface-tint": "#adc6ff",
+                    "primary-fixed-dim": "#adc6ff",
+                    "error": "#ffb4ab",
+                    "inverse-surface": "#d9e3f2",
+                    "surface-container-low": "#131c27",
+                    "surface-variant": "#2c3641",
+                    "on-secondary-container": "#003a11",
+                    "secondary": "#53e16f",
+                    "tertiary-fixed": "#ffdcbf",
+                    "secondary-fixed": "#72fe88",
+                    "inverse-on-surface": "#28313c",
+                    "surface-dim": "#0a141e",
+                    "outline-variant": "#44474d",
+                    "surface-container-lowest": "#050f19",
+                    "primary-container": "#00183c",
+                    "tertiary": "#ffb874",
+                    "on-tertiary-fixed-variant": "#6a3b00",
+                    "on-secondary-fixed-variant": "#00531c",
+                    "on-surface-variant": "#c5c6cd",
+                    "on-secondary": "#003911",
+                    "on-tertiary": "#4b2800",
+                    "background": "#0a141e",
+                    "on-primary": "#002e69",
+                    "secondary-container": "#05b046",
+                    "on-secondary-fixed": "#002107",
+                    "secondary-fixed-dim": "#53e16f",
+                    "primary": "#adc6ff",
+                    "inverse-primary": "#005bc1",
+                    "on-primary-container": "#1a7dff",
+                    "on-tertiary-fixed": "#2d1600",
+                    "surface": "#0a141e",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#212b36",
+                    "outline": "#8f9097",
+                    "on-surface": "#d9e3f2",
+                    "on-tertiary-container": "#bf6e00",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container-highest": "#2c3641",
+                    "surface-container": "#17202b",
+                    "surface-bright": "#303a45",
+                    "tertiary-container": "#291400",
+                    "error-container": "#93000a",
+                    "on-primary-fixed-variant": "#004493",
+                    "on-error": "#690005"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0a141e; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(19, 28, 39, 0.6); backdrop-filter: blur(20px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="text-on-surface select-none">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131c27]/60 backdrop-blur-xl flex justify-between items-center px-10 h-20 w-full shadow-[0_20_40px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-[#adc6ff] font-manrope">AeroBrief</span>
+<nav class="hidden md:flex gap-8 font-manrope tracking-tight text-[#d9e3f2]">
+<a class="text-[#adc6ff] border-b-2 border-[#adc6ff] pb-1" href="#">Dashboard</a>
+<a class="text-[#d9e3f2]/70 hover:text-[#d9e3f2] transition-colors" href="#">Routes</a>
+<a class="text-[#d9e3f2]/70 hover:text-[#d9e3f2] transition-colors" href="#">Weather</a>
+<a class="text-[#d9e3f2]/70 hover:text-[#d9e3f2] transition-colors" href="#">Fleet</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-[#d9e3f2]/70">
+<span class="material-symbols-outlined hover:text-[#adc6ff] cursor-pointer transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined hover:text-[#adc6ff] cursor-pointer transition-colors" data-icon="settings">settings</span>
+</div>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-[#adc6ff]/20">
+<img alt="Pilot Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional airline pilot in uniform with subtle cockpit lighting background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAt5YG5odydMcopH4YWwvyrdVSppnEVB6L6rRqKdCWJJobjl1Pqk-rBqWrZwdXm6GgkVe2m-wFnDkhhvlmwukL4MMZTG5jtIbqCcGrjXwNam5dJQ7Mpo81phq-fPhYqoirKHohKkRaLyVP6Xa0EvULGouf6qVl57oF5P5VeSkRPFoB-KZTaMU0lNgZPiEnp1DIHg_8w4CSIoOjeT2LqnFQ6AacpGy-OrksrHkzbUrTyHeu8_tv9FzViyo_WahpbVQEZqCiDJ26TgIQ"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="h-full w-64 fixed left-0 border-r border-[#d9e3f2]/15 bg-[#0a141e] flex flex-col h-screen py-8 pt-24 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[#adc6ff]" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div>
+<h3 class="font-manrope text-sm font-black text-[#adc6ff]">Flight Ops</h3>
+<p class="text-[10px] text-on-surface-variant tracking-widest uppercase">Skyline-742</p>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-manrope font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Briefing
+            </button>
+</div>
+<nav class="flex-1 space-y-1 font-manrope text-sm font-medium tracking-wide">
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 px-6 hover:text-[#d9e3f2] hover:bg-[#131c27] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span> Flight Plan
+            </a>
+<a class="flex items-center gap-4 bg-gradient-to-r from-[#adc6ff]/20 to-transparent text-[#adc6ff] border-l-4 border-[#adc6ff] py-3 px-6" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span> Briefing
+            </a>
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 px-6 hover:text-[#d9e3f2] hover:bg-[#131c27] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="thunderstorm">thunderstorm</span> Weather Ops
+            </a>
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 px-6 hover:text-[#d9e3f2] hover:bg-[#131c27] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="local_gas_station">local_gas_station</span> Fuel Logs
+            </a>
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 px-6 hover:text-[#d9e3f2] hover:bg-[#131c27] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span> Reports
+            </a>
+</nav>
+<div class="px-6 space-y-1 pt-8 border-t border-[#d9e3f2]/10 font-manrope text-sm font-medium tracking-wide">
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 hover:text-[#d9e3f2] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span> Support
+            </a>
+<a class="flex items-center gap-4 text-[#d9e3f2]/50 py-3 hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-20 h-screen grid grid-cols-12 gap-0 overflow-hidden bg-background">
+<!-- Left Panel: Flight Overview -->
+<section class="col-span-3 p-8 flex flex-col gap-12 overflow-y-auto no-scrollbar border-r border-[#d9e3f2]/5">
+<!-- 1. Flight Overview -->
+<div class="space-y-6">
+<label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Flight Overview</label>
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-manrope font-bold text-on-surface">LHR</h2>
+<p class="text-xs text-on-surface-variant">London Heathrow</p>
+<p class="text-xl font-manrope mt-2">14:20 <span class="text-xs text-outline">UTC</span></p>
+</div>
+<div class="flex-1 flex justify-center pb-4">
+<span class="material-symbols-outlined text-primary/30" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="text-right">
+<h2 class="text-3xl font-manrope font-bold text-on-surface">JFK</h2>
+<p class="text-xs text-on-surface-variant">New York John F. Kennedy</p>
+<p class="text-xl font-manrope mt-2">17:10 <span class="text-xs text-outline">UTC</span></p>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/20">
+<p class="text-[10px] text-outline uppercase tracking-widest mb-1">Departure Countdown</p>
+<div class="text-5xl font-manrope font-extrabold tracking-tighter text-secondary">
+                        01:14:42
+                    </div>
+</div>
+</div>
+<!-- 2. Aircraft Info -->
+<div class="space-y-4">
+<label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Aircraft Configuration</label>
+<div class="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+<h3 class="text-2xl font-manrope font-bold text-on-surface">A350-1000</h3>
+<p class="text-sm text-on-surface-variant">Reg: G-XWBK | Age: 2.4y</p>
+<div class="mt-6 pt-4 border-t border-outline-variant/10">
+<p class="text-[10px] text-outline uppercase tracking-widest mb-2">Inbound Status</p>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="check_circle">check_circle</span>
+<span class="text-sm text-on-surface">Arrived from DXB (On-time)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Weather -->
+<div class="space-y-6">
+<label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Weather Timeline (TAF)</label>
+<div class="flex items-center justify-between gap-2 p-4 rounded-xl bg-surface-container-highest/30">
+<div class="text-center">
+<span class="material-symbols-outlined text-primary mb-1" data-icon="light_mode">light_mode</span>
+<p class="text-[10px] text-outline">LHR</p>
+</div>
+<div class="h-[1px] flex-1 bg-gradient-to-r from-primary/40 via-tertiary/40 to-primary/40 relative">
+<div class="absolute -top-1 left-1/4 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#adc6ff]"></div>
+</div>
+<div class="text-center">
+<span class="material-symbols-outlined text-on-surface-variant mb-1" data-icon="cloud">cloud</span>
+<p class="text-[10px] text-outline">JFK</p>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<div class="text-center p-2 rounded-lg bg-surface-container-low">
+<p class="text-[9px] text-outline">14Z</p>
+<span class="material-symbols-outlined text-xs" data-icon="wb_sunny">wb_sunny</span>
+</div>
+<div class="text-center p-2 rounded-lg bg-surface-container-low">
+<p class="text-[9px] text-outline">16Z</p>
+<span class="material-symbols-outlined text-xs" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+</div>
+<div class="text-center p-2 rounded-lg bg-surface-container-low">
+<p class="text-[9px] text-outline">18Z</p>
+<span class="material-symbols-outlined text-xs" data-icon="cloud">cloud</span>
+</div>
+<div class="text-center p-2 rounded-lg bg-surface-container-low">
+<p class="text-[9px] text-outline">20Z</p>
+<span class="material-symbols-outlined text-xs" data-icon="rainy">rainy</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Center: Interactive Globe -->
+<section class="col-span-6 relative flex items-center justify-center overflow-hidden bg-[#050f19]">
+<!-- Map Background Layer -->
+<div class="absolute inset-0 opacity-40">
+<img alt="Dark stylized satellite view of Earth with minimal landmass contrast" class="w-full h-full object-cover" data-alt="minimalist satellite view of the North Atlantic at night with deep blue oceans and faintly glowing city lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjAfVQviqTJGg0rWuPbYoipaXZjxTKluLlg-1-Rmc2WyDiBnxTqGal5hmFJ2lHV4shf4F3Ij-I7zq5lrg6Hz-E-zd1AeXzCAlXPKn_h9kwgrTIToq8GNyR99SOBvt0YiLeuUMZ9FxGdj0mxbwXw_JkZku8JvAAG04-lJq_sJMyrsKc6jUGMBmfn26Jxu_6rnOmznJ-7npXjQVhqraPb8AftBuivvx_DmBpNJG1j39qu4vdOv0aCBFoXS_cU_aSGh78lzwcaM6Tawin"/>
+</div>
+<!-- Atmospheric Overlays -->
+<div class="absolute inset-0 bg-radial-gradient from-transparent via-background/60 to-background pointer-events-none"></div>
+<!-- Globe/Path Overlay (SVG Simulation) -->
+<svg class="absolute w-[80%] h-[60%] z-10 overflow-visible" viewbox="0 0 800 400">
+<!-- Route Line -->
+<path class="opacity-80" d="M100,200 Q400,50 700,200" fill="none" stroke="#adc6ff" stroke-dasharray="8 4" stroke-width="2"></path>
+<path class="opacity-20 blur-md" d="M100,200 Q400,50 700,200" fill="none" stroke="#adc6ff" stroke-width="4"></path>
+<!-- Pulse Points -->
+<circle cx="100" cy="200" fill="#adc6ff" r="4"></circle>
+<circle cx="700" cy="200" fill="#adc6ff" r="4"></circle>
+<!-- Aircraft Icon -->
+<g transform="translate(380, 85) rotate(-15)">
+<text class="material-symbols-outlined text-primary" fill="#adc6ff" font-size="24">flight</text>
+</g>
+</svg>
+<!-- Floating Top Card -->
+<div class="absolute top-8 w-3/4 z-20">
+<div class="glass-panel p-6 rounded-[2rem] flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/10">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-primary-container rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="flight">flight</span>
+</div>
+<div>
+<h1 class="text-xl font-manrope font-extrabold text-on-surface">BA 117 <span class="font-normal text-on-surface-variant ml-2">British Airways</span></h1>
+<p class="text-sm font-medium text-on-surface-variant flex items-center gap-2">
+                                LHR <span class="material-symbols-outlined text-xs" data-icon="trending_flat">trending_flat</span> JFK
+                            </p>
+</div>
+</div>
+<div class="flex items-center gap-12 h-full pr-4">
+<div class="text-center">
+<p class="text-[10px] text-outline uppercase tracking-widest">Duration</p>
+<p class="text-lg font-manrope font-bold">07h 45m</p>
+</div>
+<div class="flex items-center gap-3 px-6 py-2 bg-secondary/10 rounded-full border border-secondary/20">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#53e16f]"></div>
+<span class="text-sm font-manrope font-bold text-secondary uppercase tracking-wider">Scheduled</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom: Wind Profile Chart -->
+<div class="absolute bottom-8 w-4/5 h-24 z-20 px-10">
+<div class="flex items-end justify-between w-full h-full gap-1 opacity-60">
+<div class="w-full bg-primary/10 rounded-t-lg h-[40%]"></div>
+<div class="w-full bg-primary/15 rounded-t-lg h-[55%]"></div>
+<div class="w-full bg-primary/20 rounded-t-lg h-[70%]"></div>
+<div class="w-full bg-primary/15 rounded-t-lg h-[65%]"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[45%]"></div>
+<div class="w-full bg-secondary/20 rounded-t-lg h-[30%]"></div>
+<div class="w-full bg-secondary/15 rounded-t-lg h-[25%]"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[40%]"></div>
+<div class="w-full bg-primary/20 rounded-t-lg h-[60%]"></div>
+<div class="w-full bg-primary/25 rounded-t-lg h-[80%]"></div>
+<div class="w-full bg-tertiary/20 rounded-t-lg h-[90%]"></div>
+<div class="w-full bg-primary/15 rounded-t-lg h-[50%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[8px] text-outline tracking-widest uppercase">
+<span>Altitude 0ft</span>
+<span>Atmospheric Wind Profile (Avg. 45kts)</span>
+<span>Altitude 41,000ft</span>
+</div>
+</div>
+</section>
+<!-- Right Panel: Insights & Details -->
+<section class="col-span-3 p-8 flex flex-col gap-10 overflow-y-auto no-scrollbar border-l border-[#d9e3f2]/5">
+<!-- Layer 1: Key Insights -->
+<div class="space-y-6">
+<label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Mission Insights</label>
+<div class="space-y-3">
+<div class="flex items-start gap-4 p-4 rounded-xl bg-secondary/5 border-l-4 border-secondary">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Smooth departure</p>
+<p class="text-xs text-on-surface-variant">Congestion at LHR is minimal; slot confirmed.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-xl bg-tertiary/5 border-l-4 border-tertiary">
+<span class="material-symbols-outlined text-tertiary" data-icon="warning">warning</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Moderate turbulence mid-flight</p>
+<p class="text-xs text-on-surface-variant">Expected between 30W and 45W over Atlantic.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-xl bg-primary/5 border-l-4 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="air">air</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Tailwinds</p>
+<p class="text-xs text-on-surface-variant">+20kts average anticipated, saving 400kg fuel.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Layer 2: Expandable Glass Cards -->
+<div class="space-y-4">
+<label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Detail Briefing</label>
+<!-- Delay Risk -->
+<div class="glass-panel p-4 rounded-2xl border border-outline-variant/10 cursor-pointer hover:bg-surface-container-highest transition-all group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="timer">timer</span>
+<span class="text-sm font-manrope font-bold">Delay Risk</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-secondary/20 text-secondary font-bold">LOW</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-on-surface">95% probability of on-time arrival based on fleet history.</p>
+</div>
+<!-- Turbulence -->
+<div class="glass-panel p-4 rounded-2xl border border-outline-variant/10 cursor-pointer hover:bg-surface-container-highest transition-all group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="waves">waves</span>
+<span class="text-sm font-manrope font-bold">Turbulence (PIREPs)</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-tertiary/20 text-tertiary font-bold">MOD</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-on-surface">Recent pilot reports indicate chop at FL360.</p>
+</div>
+<!-- Jet Stream -->
+<div class="glass-panel p-4 rounded-2xl border border-outline-variant/10 cursor-pointer hover:bg-surface-container-highest transition-all group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+<span class="text-sm font-manrope font-bold">Jet Stream</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-primary/20 text-primary font-bold">ACTIVE</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-on-surface">Core velocity 120kts at FL390 along North track.</p>
+</div>
+<!-- Flight Time Impact -->
+<div class="glass-panel p-4 rounded-2xl border border-outline-variant/10 cursor-pointer hover:bg-surface-container-highest transition-all group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+<span class="text-sm font-manrope font-bold">Flight Time Impact</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-primary/20 text-primary font-bold">-12m</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-on-surface">Optimal routing has shaved 12 minutes off ETO.</p>
+</div>
+<!-- Weather Alerts -->
+<div class="glass-panel p-4 rounded-2xl border border-outline-variant/10 cursor-pointer hover:bg-surface-container-highest transition-all group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" data-icon="emergency_home">emergency_home</span>
+<span class="text-sm font-manrope font-bold">Weather Alerts (SIGMETs)</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] bg-error/20 text-error font-bold">0</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 group-hover:text-on-surface">No hazardous weather advisories on the active route.</p>
+</div>
+</div>
+</section>
+</main>
+</body></html>

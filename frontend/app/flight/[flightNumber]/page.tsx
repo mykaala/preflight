@@ -417,12 +417,12 @@ const TYPE = {
 	} as React.CSSProperties
 };
 
-// GLASS CARD SYSTEM — tonal layering, no hard borders (Flight Briefing App palette)
+// GLASS CARD SYSTEM — tonal layering, Stitch AeroBrief palette
 const GLASS_BASE: React.CSSProperties = {
-	background: '#1a1c20',
+	background: '#131c27',
 	backdropFilter: 'blur(20px) saturate(180%)',
 	WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-	border: '1px solid rgba(255, 255, 255, 0.05)',
+	border: '1px solid rgba(217, 227, 242, 0.06)',
 	borderRadius: '20px'
 };
 
@@ -430,7 +430,7 @@ const CARD: React.CSSProperties = {
 	...GLASS_BASE,
 	padding: '16px 18px',
 	marginBottom: '12px',
-	boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(170, 199, 255, 0.05)',
+	boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(173, 198, 255, 0.05)',
 	transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
 };
 
@@ -438,17 +438,17 @@ const CARD_ELEVATED: React.CSSProperties = {
 	...GLASS_BASE,
 	padding: '18px 20px',
 	marginBottom: '12px',
-	background: '#282a2e',
-	border: '1px solid rgba(170, 199, 255, 0.08)',
-	boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(170, 199, 255, 0.07)'
+	background: '#212b36',
+	border: '1px solid rgba(173, 198, 255, 0.08)',
+	boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(173, 198, 255, 0.07)'
 };
 
 const getCardHoverStyle = (isHovered: boolean): React.CSSProperties => ({
 	...CARD,
 	...(isHovered && {
-		background: '#1e2024',
-		border: '1px solid rgba(170, 199, 255, 0.1)',
-		boxShadow: '0 12px 40px rgba(0, 0, 0, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+		background: '#17202b',
+		border: '1px solid rgba(173, 198, 255, 0.1)',
+		boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.08)',
 		transform: 'translateY(-2px)'
 	})
 });
@@ -919,10 +919,10 @@ function LeftPanel({
 				flexShrink: 0,
 				overflowY: 'auto',
 				padding: '24px 20px',
-				background: 'rgba(17, 19, 24, 0.6)',
+				background: 'rgba(10, 20, 30, 0.7)',
 				backdropFilter: 'blur(20px)',
 				WebkitBackdropFilter: 'blur(20px)',
-				borderRight: '1px solid rgba(255, 255, 255, 0.04)',
+				borderRight: '1px solid rgba(217, 227, 242, 0.05)',
 				position: 'relative',
 				scrollbarWidth: 'none',
 				msOverflowStyle: 'none'
@@ -1194,9 +1194,9 @@ function MapView({ data }: { data: PreflightData }) {
 
 		map.on('style.load', () => {
 			map.setFog({
-				color: '#111318',
-				'high-color': '#0c0e12',
-				'space-color': '#111318',
+				color: '#0a141e',
+				'high-color': '#050f19',
+				'space-color': '#0a141e',
 				'horizon-blend': 0.04,
 				'star-intensity': 0.6
 			});
@@ -1350,7 +1350,7 @@ function MapView({ data }: { data: PreflightData }) {
 				style={{
 					width: '100%',
 					height: '100%',
-					background: '#111318',
+					background: '#0a141e',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center'
@@ -1699,10 +1699,10 @@ function RightPanel({
 				flexShrink: 0,
 				overflow: 'hidden',
 				padding: '24px 20px 16px',
-				background: 'rgba(17, 19, 24, 0.6)',
+				background: 'rgba(10, 20, 30, 0.7)',
 				backdropFilter: 'blur(20px)',
 				WebkitBackdropFilter: 'blur(20px)',
-				borderLeft: '1px solid rgba(255, 255, 255, 0.04)',
+				borderLeft: '1px solid rgba(217, 227, 242, 0.05)',
 				position: 'relative',
 				boxSizing: 'border-box'
 			}}
@@ -1734,8 +1734,38 @@ function RightPanel({
 					borderBottom: '1px solid rgba(255,255,255,0.06)'
 				}}
 			>
-				Route Outlook
+				Mission Insights
 			</div>
+
+			{/* Top insight cards — border-l-4 style matching Stitch dashboard */}
+			<div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16, flexShrink: 0 }}>
+				{/* Departure */}
+				<div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(83,225,111,0.05)', borderLeft: '3px solid #53e16f' }}>
+					<span className='material-symbols-outlined' style={{ fontSize: 18, color: '#53e16f', flexShrink: 0, marginTop: 1 }}>check_circle</span>
+					<div>
+						<div style={{ fontFamily: INTER, fontSize: 12, fontWeight: 600, color: '#d9e3f2', marginBottom: 2 }}>Smooth departure</div>
+						<div style={{ fontFamily: INTER, fontSize: 11, color: 'rgba(217,227,242,0.5)', lineHeight: 1.4 }}>{narrative.delayRisk}</div>
+					</div>
+				</div>
+				{/* Turbulence */}
+				<div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(255,184,116,0.05)', borderLeft: '3px solid #ffb874' }}>
+					<span className='material-symbols-outlined' style={{ fontSize: 18, color: '#ffb874', flexShrink: 0, marginTop: 1 }}>waves</span>
+					<div>
+						<div style={{ fontFamily: INTER, fontSize: 12, fontWeight: 600, color: '#d9e3f2', marginBottom: 2 }}>En-route turbulence</div>
+						<div style={{ fontFamily: INTER, fontSize: 11, color: 'rgba(217,227,242,0.5)', lineHeight: 1.4 }}>{narrative.turbulence}</div>
+					</div>
+				</div>
+				{/* Jet stream */}
+				<div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 12px', borderRadius: 10, background: 'rgba(173,198,255,0.05)', borderLeft: '3px solid #adc6ff' }}>
+					<span className='material-symbols-outlined' style={{ fontSize: 18, color: '#adc6ff', flexShrink: 0, marginTop: 1 }}>air</span>
+					<div>
+						<div style={{ fontFamily: INTER, fontSize: 12, fontWeight: 600, color: '#d9e3f2', marginBottom: 2 }}>Jet stream</div>
+						<div style={{ fontFamily: INTER, fontSize: 11, color: 'rgba(217,227,242,0.5)', lineHeight: 1.4 }}>{narrative.jetStream}</div>
+					</div>
+				</div>
+			</div>
+
+			<div style={{ ...TYPE.LABEL, flexShrink: 0, marginBottom: '10px' }}>Detail Briefing</div>
 
 			{/* Expandable cards — take 60% of space by default */}
 			<div
@@ -2235,107 +2265,18 @@ function RightPanel({
 
 // ── Loading screen ─────────────────────────────────────────────────────────────
 
-const LOADING_MESSAGES = [
-	'Fetching flight data…',
-	'Loading aircraft info…',
-	'Checking weather conditions…',
-	'Retrieving route information…',
-	'Analyzing altitude data…',
-	'Gathering atmosphere metrics…',
-	'Preparing flight details…',
-	'Synchronizing flight data…',
-	'Loading performance metrics…',
-	'Fetching navigation data…'
+const FLIGHT_LOADING_STEPS = [
+	'Fetching route data...',
+	'Analyzing weather conditions...',
+	'Mapping turbulence reports...',
+	'Preparing your briefing...'
 ];
 
-function StarCanvas() {
-	const ref = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		const canvas = ref.current;
-		if (!canvas) return;
-		const ctx = canvas.getContext('2d')!;
-
-		const setSize = () => {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-		};
-		setSize();
-		window.addEventListener('resize', setSize);
-
-		const stars = Array.from({ length: 160 }, () => ({
-			x: Math.random() * window.innerWidth,
-			y: Math.random() * window.innerHeight,
-			r: Math.random() * 0.85 + 0.15,
-			alpha: Math.random() * 0.75 + 0.1,
-			phase: Math.random() * Math.PI * 2,
-			freq: Math.random() * 0.008 + 0.003
-		}));
-
-		const bright = Array.from({ length: 12 }, () => ({
-			x: Math.random() * window.innerWidth,
-			y: Math.random() * window.innerHeight,
-			r: Math.random() * 1.2 + 0.8,
-			alpha: Math.random() * 0.5 + 0.4,
-			phase: Math.random() * Math.PI * 2,
-			freq: Math.random() * 0.005 + 0.002
-		}));
-
-		let frame: number;
-		let t = 0;
-
-		const tick = () => {
-			t++;
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-			for (const s of stars) {
-				const a = s.alpha * (0.35 + 0.65 * (0.5 + 0.5 * Math.sin(s.phase + t * s.freq)));
-				ctx.beginPath();
-				ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-				ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
-				ctx.fill();
-			}
-
-			for (const s of bright) {
-				const a = s.alpha * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(s.phase + t * s.freq)));
-				const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
-				grad.addColorStop(0, `rgba(180,210,255,${a.toFixed(3)})`);
-				grad.addColorStop(1, 'rgba(180,210,255,0)');
-				ctx.beginPath();
-				ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
-				ctx.fillStyle = grad;
-				ctx.fill();
-
-				ctx.beginPath();
-				ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-				ctx.fillStyle = `rgba(220,235,255,${a.toFixed(3)})`;
-				ctx.fill();
-			}
-
-			frame = requestAnimationFrame(tick);
-		};
-		tick();
-
-		return () => {
-			window.removeEventListener('resize', setSize);
-			cancelAnimationFrame(frame);
-		};
-	}, []);
-
-	return (
-		<canvas
-			ref={ref}
-			style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-		/>
-	);
-}
-
 function LoadingScreen({ flightNumber }: { flightNumber: string }) {
-	const [msgIdx, setMsgIdx] = useState(0);
+	const [step, setStep] = useState(0);
 
 	useEffect(() => {
-		setMsgIdx(Math.floor(Math.random() * LOADING_MESSAGES.length));
-		const id = setInterval(() => setMsgIdx((i) => (i + 1) % LOADING_MESSAGES.length), 2800);
+		const id = setInterval(() => setStep((s) => Math.min(s + 1, FLIGHT_LOADING_STEPS.length - 1)), 2200);
 		return () => clearInterval(id);
 	}, []);
 
@@ -2344,82 +2285,102 @@ function LoadingScreen({ flightNumber }: { flightNumber: string }) {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ duration: 0.25 }}
+			transition={{ duration: 0.3 }}
 			style={{
 				position: 'fixed',
 				inset: 0,
 				zIndex: 1000,
-				background: '#111318',
+				background: 'radial-gradient(circle at center, #131c27 0%, #0a141e 100%)',
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				gap: 28
+				overflow: 'hidden'
 			}}
 		>
-			<StarCanvas />
+			{/* Ambient glow */}
+			<div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 800, height: 800, background: 'rgba(173,198,255,0.04)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none' }} />
 
-			<motion.div
-				animate={{ rotate: 360 }}
-				transition={{ duration: 1.4, repeat: Infinity, ease: 'linear' }}
-				style={{
-					width: 44,
-					height: 44,
-					borderRadius: '50%',
-					border: '1.5px solid rgba(170,199,255,0.12)',
-					borderTopColor: 'rgba(170,199,255,0.8)',
-					position: 'relative',
-					zIndex: 1
-				}}
-			/>
-
-			<div
-				style={{
-					fontFamily: INTER,
-					fontSize: 26,
-					fontWeight: 600,
-					letterSpacing: '0.1em',
-					color: 'rgba(255,255,255,0.88)',
-					position: 'relative',
-					zIndex: 1
-				}}
-			>
-				{flightNumber}
+			{/* Globe */}
+			<div style={{ position: 'relative', width: 320, height: 320, marginBottom: 48 }}>
+				<motion.div
+					animate={{ opacity: [0.3, 0.7, 0.3] }}
+					transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+					style={{ position: 'absolute', inset: -20, border: '1px solid rgba(173,198,255,0.06)', borderRadius: '50%' }}
+				/>
+				<div style={{ position: 'absolute', inset: -40, border: '1px solid rgba(173,198,255,0.03)', borderRadius: '50%', opacity: 0.3 }} />
+				<div style={{
+					position: 'absolute', inset: 0, borderRadius: '50%',
+					background: '#131c27',
+					border: '1px solid rgba(173,198,255,0.1)',
+					overflow: 'hidden',
+					boxShadow: '0 0 80px 20px rgba(173,198,255,0.12)'
+				}}>
+					<img
+						src='https://lh3.googleusercontent.com/aida-public/AB6AXuCacf1d5YkeuhkfPs0HeCEyOg7InXAKq05wVPln0G4O6l7TLIp6atrmXMN92wNRlVFkNzBNw0qnp-vuIhJLOmAyJ2PuTRYGifkkM46xv9RMZwLZUKnMHy9Y1ZxRP6CXLs2EMrG1H8Hay7kxqy5X9GfV4hOCZJdb8ez9Uho5PEwnCfYqg3fzpMdHzhrcFxMEvzjlpYi8vT1m2ObczI2MVOYCWQeRU_Ye3taa2KOrXXezkyJL4m2uMP0bzJGyLrbWEBslI1oH3_VnRpS-'
+						alt='Globe'
+						style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, mixBlendMode: 'lighten' }}
+					/>
+					<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox='0 0 100 100'>
+						<motion.path
+							d='M 30 70 Q 50 20 70 30'
+							fill='none'
+							stroke='#adc6ff'
+							strokeWidth='0.5'
+							strokeLinecap='round'
+							initial={{ pathLength: 0, opacity: 0.4 }}
+							animate={{ pathLength: 1, opacity: 1 }}
+							transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+						/>
+						<motion.circle cx='30' cy='70' r='1' fill='#53e16f' animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 4, repeat: Infinity }} />
+						<circle cx='70' cy='30' r='1' fill='#adc6ff' />
+					</svg>
+				</div>
 			</div>
 
-			<AnimatePresence mode='wait'>
-				<motion.div
-					key={msgIdx}
-					initial={{ opacity: 0, y: 6 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -6 }}
-					transition={{ duration: 0.28, ease: 'easeOut' }}
-					style={{
-						fontFamily: INTER,
-						fontSize: 10,
-						letterSpacing: '0.12em',
-						color: 'rgba(255,255,255,0.55)',
-						textTransform: 'uppercase',
-						position: 'relative',
-						zIndex: 1
-					}}
-				>
-					{LOADING_MESSAGES[msgIdx]}
-				</motion.div>
-			</AnimatePresence>
+			{/* Branding */}
+			<div style={{ textAlign: 'center', marginBottom: 32, position: 'relative', zIndex: 1 }}>
+				<div style={{ fontFamily: DISPLAY, fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', color: '#adc6ff', marginBottom: 6 }}>
+					{flightNumber || 'Preflight'}
+				</div>
+				<div style={{ fontFamily: INTER, fontSize: 10, letterSpacing: '0.3em', color: 'rgba(197,198,205,0.6)', textTransform: 'uppercase' }}>
+					Precision Navigation System
+				</div>
+			</div>
 
-			<div
-				style={{
-					position: 'absolute',
-					bottom: 36,
-					fontFamily: INTER,
-					fontSize: 9,
-					letterSpacing: '0.2em',
-					color: 'rgba(255,255,255,0.1)',
-					zIndex: 1
-				}}
-			>
-				Preflight
+			{/* Step messages */}
+			<div style={{ display: 'flex', flexDirection: 'column', gap: 14, position: 'relative', zIndex: 1 }}>
+				{FLIGHT_LOADING_STEPS.map((msg, i) => {
+					const isDone = i < step;
+					const isActive = i === step;
+					const isPending = i > step;
+					return (
+						<div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: isPending ? 0.25 : 1, transition: 'opacity 0.5s ease' }}>
+							{isDone ? (
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: '#53e16f', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+							) : isActive ? (
+								<motion.span className='material-symbols-outlined' animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.2, repeat: Infinity }} style={{ fontSize: 16, color: '#adc6ff' }}>sync</motion.span>
+							) : (
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: 'rgba(197,198,205,0.4)' }}>radio_button_unchecked</span>
+							)}
+							<span style={{ fontFamily: INTER, fontSize: 13, color: isDone ? 'rgba(217,227,242,0.65)' : isActive ? '#d9e3f2' : 'rgba(197,198,205,0.4)', letterSpacing: '0.01em' }}>
+								{msg}
+							</span>
+						</div>
+					);
+				})}
+			</div>
+
+			{/* Bottom bar */}
+			<div style={{ position: 'absolute', bottom: 40, display: 'flex', alignItems: 'center', gap: 16, background: 'rgba(44,54,65,0.4)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: 999, border: '1px solid rgba(68,71,77,0.2)' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+					<span style={{ fontFamily: INTER, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#8f9097' }}>System Load</span>
+					<div style={{ width: 120, height: 3, background: 'rgba(44,54,65,1)', borderRadius: 999, overflow: 'hidden' }}>
+						<motion.div animate={{ width: ['20%', '60%', '85%'] }} transition={{ duration: 5, ease: 'easeOut' }} style={{ height: '100%', background: '#adc6ff', borderRadius: 999 }} />
+					</div>
+				</div>
+				<div style={{ width: 1, height: 28, background: 'rgba(68,71,77,0.3)' }} />
+				<span style={{ fontFamily: INTER, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(197,198,205,0.6)' }}>Ver 4.2.0-Skyline</span>
 			</div>
 		</motion.div>
 	);
@@ -2483,7 +2444,7 @@ function FlightPageInner() {
 				style={{
 					width: '100vw',
 					height: '100vh',
-					background: '#111318',
+					background: '#0a141e',
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
@@ -2524,20 +2485,12 @@ function FlightPageInner() {
 
 	const { flight, origin, destination } = data;
 
-	const sideNavItems = [
-		{ icon: 'assessment', label: 'Overview', active: true },
-		{ icon: 'cyclone', label: 'Meteorology', active: false },
-		{ icon: 'explore', label: 'Navigation', active: false },
-		{ icon: 'weight', label: 'Payload', active: false },
-		{ icon: 'shield', label: 'Safety', active: false }
-	];
-
 	return (
 		<div
 			style={{
 				width: '100vw',
 				height: '100vh',
-				background: '#111318',
+				background: '#0a141e',
 				display: 'flex',
 				flexDirection: 'column',
 				overflow: 'hidden',
@@ -2560,10 +2513,11 @@ function FlightPageInner() {
 					padding: '0 32px',
 					height: 80,
 					flexShrink: 0,
-					background: 'rgba(17,19,24,0.6)',
+					background: 'rgba(5,15,25,0.6)',
 					backdropFilter: 'blur(20px) saturate(180%)',
 					WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-					boxShadow: '0 20px 50px rgba(10,132,255,0.08)'
+					boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+					borderBottom: '1px solid rgba(255,255,255,0.05)'
 				}}
 			>
 				<div
@@ -2625,130 +2579,7 @@ function FlightPageInner() {
 			{/* ── Body (sidebar + panels) ── */}
 			<div style={{ display: 'flex', flexDirection: 'row', flex: 1, marginTop: 80, overflow: 'hidden' }}>
 				{/* ── Sidebar ── */}
-				<aside
-					style={{
-						width: 256,
-						flexShrink: 0,
-						height: '100%',
-						display: 'flex',
-						flexDirection: 'column',
-						padding: '24px 0',
-						background: 'rgba(17,19,24,0.4)',
-						backdropFilter: 'blur(16px)',
-						WebkitBackdropFilter: 'blur(16px)',
-						borderRight: '1px solid rgba(255,255,255,0.04)'
-					}}
-				>
-					{/* Flight identifier */}
-					<div style={{ padding: '0 24px', marginBottom: 32 }}>
-						<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-							<div
-								style={{
-									width: 40,
-									height: 40,
-									borderRadius: 10,
-									background: 'rgba(62,144,255,0.15)',
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									color: '#aac7ff',
-									flexShrink: 0
-								}}
-							>
-								<span className='material-symbols-outlined' style={{ fontSize: 20 }}>rocket_launch</span>
-							</div>
-							<div>
-								<div style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 700, color: '#e2e2e8' }}>
-									{flight.flightNumber.replace(' ', '')}
-								</div>
-								<div
-									style={{
-										fontFamily: INTER,
-										fontSize: 10,
-										color: '#c0c6d6',
-										textTransform: 'uppercase',
-										letterSpacing: '0.12em',
-										marginTop: 2
-									}}
-								>
-									{origin.iata}–{destination.iata}
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Nav items */}
-					<nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-						{sideNavItems.map(({ icon, label, active }) => (
-							<div
-								key={label}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 16,
-									padding: '12px 24px',
-									background: active
-										? 'linear-gradient(90deg, rgba(170,199,255,0.12) 0%, transparent 100%)'
-										: 'transparent',
-									borderLeft: active ? '3px solid #aac7ff' : '3px solid transparent',
-									color: active ? '#aac7ff' : '#c0c6d6',
-									cursor: 'default',
-									transition: 'all 0.2s'
-								}}
-								onMouseEnter={(e) => {
-									if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)';
-								}}
-								onMouseLeave={(e) => {
-									if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent';
-								}}
-							>
-								<span className='material-symbols-outlined' style={{ fontSize: 20 }}>{icon}</span>
-								<span
-									style={{
-										fontFamily: INTER,
-										fontSize: 11,
-										fontWeight: 500,
-										textTransform: 'uppercase',
-										letterSpacing: '0.1em'
-									}}
-								>
-									{label}
-								</span>
-							</div>
-						))}
-					</nav>
-
-					{/* Generate PDF */}
-					<div style={{ padding: '0 24px' }}>
-						<button
-							style={{
-								width: '100%',
-								padding: '12px',
-								background: 'rgba(51,53,57,0.3)',
-								color: '#aac7ff',
-								border: '1px solid rgba(65,71,84,0.3)',
-								borderRadius: 8,
-								fontFamily: INTER,
-								fontSize: 11,
-								fontWeight: 700,
-								textTransform: 'uppercase',
-								letterSpacing: '0.12em',
-								cursor: 'pointer',
-								transition: 'all 0.2s'
-							}}
-							onMouseEnter={(e) => {
-								(e.currentTarget as HTMLElement).style.background = 'rgba(51,53,57,0.6)';
-							}}
-							onMouseLeave={(e) => {
-								(e.currentTarget as HTMLElement).style.background = 'rgba(51,53,57,0.3)';
-							}}
-						>
-							Generate PDF
-						</button>
-					</div>
-				</aside>
-
-				{/* ── Main 3-panel area ── */}
+			{/* ── Main 3-panel area ── */}
 				<div style={{ flex: 1, display: 'flex', flexDirection: 'row', overflow: 'hidden', minWidth: 0 }}>
 					<LeftPanel data={data} width={leftWidth} onResizeStart={handleLeftMouseDown} />
 					<div style={{ flex: 1, position: 'relative', minWidth: 0 }}>

@@ -182,11 +182,18 @@ function StarCanvas() {
 }
 
 // ── Loading Screen ─────────────────────────────────────────────────────────────
+const LOADING_STEPS = [
+	{ label: 'Fetching route data...', done: true },
+	{ label: 'Analyzing weather conditions...', active: true },
+	{ label: 'Mapping turbulence reports...', done: false },
+	{ label: 'Preparing your briefing...', done: false }
+];
+
 function LoadingScreen({ flight }: { flight: string }) {
-	const [msgIdx, setMsgIdx] = useState(0);
+	const [step, setStep] = useState(1);
 
 	useEffect(() => {
-		const id = setInterval(() => setMsgIdx((i) => (i + 1) % LOADING_MESSAGES.length), 2800);
+		const id = setInterval(() => setStep((s) => Math.min(s + 1, LOADING_STEPS.length - 1)), 2200);
 		return () => clearInterval(id);
 	}, []);
 
@@ -195,93 +202,105 @@ function LoadingScreen({ flight }: { flight: string }) {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ duration: 0.25 }}
+			transition={{ duration: 0.3 }}
 			style={{
 				position: 'fixed',
 				inset: 0,
 				zIndex: 1000,
-				background: '#111318',
+				background: 'radial-gradient(circle at center, #131c27 0%, #0a141e 100%)',
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				gap: 28
+				overflow: 'hidden'
 			}}
 		>
-			<StarCanvas />
+			{/* Ambient glow */}
+			<div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 800, height: 800, background: 'rgba(173,198,255,0.04)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none' }} />
 
-			{/* Progress indicator */}
-			<div
-				style={{
-					width: 192,
-					height: 2,
-					background: 'rgba(170,199,255,0.12)',
-					borderRadius: 999,
-					overflow: 'hidden',
-					position: 'relative',
-					zIndex: 1
-				}}
-			>
+			{/* Globe */}
+			<div style={{ position: 'relative', width: 320, height: 320, marginBottom: 48 }}>
+				{/* Outer pulse rings */}
 				<motion.div
-					animate={{ x: ['-100%', '100%'] }}
-					transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-					style={{
-						position: 'absolute',
-						inset: 0,
-						background: 'linear-gradient(90deg, transparent, #aac7ff, transparent)',
-						boxShadow: '0 0 10px rgba(170,199,255,0.5)'
-					}}
+					animate={{ opacity: [0.3, 0.7, 0.3] }}
+					transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+					style={{ position: 'absolute', inset: -20, border: '1px solid rgba(173,198,255,0.06)', borderRadius: '50%' }}
 				/>
+				<div style={{ position: 'absolute', inset: -40, border: '1px solid rgba(173,198,255,0.03)', borderRadius: '50%', opacity: 0.3 }} />
+				{/* Globe container */}
+				<div style={{
+					position: 'absolute', inset: 0, borderRadius: '50%',
+					background: '#131c27',
+					border: '1px solid rgba(173,198,255,0.1)',
+					overflow: 'hidden',
+					boxShadow: '0 0 80px 20px rgba(173,198,255,0.12)'
+				}}>
+					<img
+						src='https://lh3.googleusercontent.com/aida-public/AB6AXuCacf1d5YkeuhkfPs0HeCEyOg7InXAKq05wVPln0G4O6l7TLIp6atrmXMN92wNRlVFkNzBNw0qnp-vuIhJLOmAyJ2PuTRYGifkkM46xv9RMZwLZUKnMHy9Y1ZxRP6CXLs2EMrG1H8Hay7kxqy5X9GfV4hOCZJdb8ez9Uho5PEwnCfYqg3fzpMdHzhrcFxMEvzjlpYi8vT1m2ObczI2MVOYCWQeRU_Ye3taa2KOrXXezkyJL4m2uMP0bzJGyLrbWEBslI1oH3_VnRpS-'
+						alt='Globe'
+						style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, mixBlendMode: 'lighten' }}
+					/>
+					{/* Animated route line */}
+					<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox='0 0 100 100'>
+						<motion.path
+							d='M 30 70 Q 50 20 70 30'
+							fill='none'
+							stroke='#adc6ff'
+							strokeWidth='0.5'
+							strokeLinecap='round'
+							initial={{ pathLength: 0, opacity: 0.4 }}
+							animate={{ pathLength: 1, opacity: 1 }}
+							transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+						/>
+						<motion.circle cx='30' cy='70' r='1' fill='#53e16f' animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 4, repeat: Infinity }} />
+						<circle cx='70' cy='30' r='1' fill='#adc6ff' />
+					</svg>
+				</div>
 			</div>
 
-			<div
-				style={{
-					fontFamily: 'var(--font-family-display)',
-					fontSize: 26,
-					fontWeight: 700,
-					letterSpacing: '-0.02em',
-					color: '#e2e2e8',
-					position: 'relative',
-					zIndex: 1
-				}}
-			>
-				{flight}
+			{/* Branding */}
+			<div style={{ textAlign: 'center', marginBottom: 32, position: 'relative', zIndex: 1 }}>
+				<div style={{ fontFamily: 'var(--font-family-display)', fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', color: '#adc6ff', marginBottom: 6 }}>
+					{flight || 'Preflight'}
+				</div>
+				<div style={{ fontFamily: 'var(--font-family-sans)', fontSize: 10, letterSpacing: '0.3em', color: 'rgba(197,198,205,0.6)', textTransform: 'uppercase' }}>
+					Precision Navigation System
+				</div>
 			</div>
 
-			<AnimatePresence mode='wait'>
-				<motion.div
-					key={msgIdx}
-					initial={{ opacity: 0, y: 6 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -6 }}
-					transition={{ duration: 0.28, ease: 'easeOut' }}
-					style={{
-						fontFamily: 'var(--font-family-sans)',
-						fontSize: 10,
-						letterSpacing: '0.2em',
-						color: '#c0c6d6',
-						textTransform: 'uppercase',
-						position: 'relative',
-						zIndex: 1
-					}}
-				>
-					{LOADING_MESSAGES[msgIdx]}
-				</motion.div>
-			</AnimatePresence>
+			{/* Step messages */}
+			<div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'relative', zIndex: 1 }}>
+				{LOADING_STEPS.map((s, i) => {
+					const isDone = i < step;
+					const isActive = i === step;
+					const isPending = i > step;
+					return (
+						<div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: isPending ? 0.25 : 1, transition: 'opacity 0.5s ease' }}>
+							{isDone ? (
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: '#53e16f', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+							) : isActive ? (
+								<motion.span className='material-symbols-outlined' animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.2, repeat: Infinity }} style={{ fontSize: 16, color: '#adc6ff' }}>sync</motion.span>
+							) : (
+								<span className='material-symbols-outlined' style={{ fontSize: 16, color: 'rgba(197,198,205,0.5)' }}>radio_button_unchecked</span>
+							)}
+							<span style={{ fontFamily: 'var(--font-family-sans)', fontSize: 13, color: isDone ? 'rgba(217,227,242,0.7)' : isActive ? '#d9e3f2' : 'rgba(197,198,205,0.5)', letterSpacing: '0.01em' }}>
+								{s.label}
+							</span>
+						</div>
+					);
+				})}
+			</div>
 
-			<div
-				style={{
-					position: 'absolute',
-					bottom: 36,
-					fontFamily: 'var(--font-family-sans)',
-					fontSize: 9,
-					letterSpacing: '0.2em',
-					color: 'rgba(170,199,255,0.15)',
-					zIndex: 1,
-					textTransform: 'uppercase'
-				}}
-			>
-				Preflight
+			{/* Bottom bar */}
+			<div style={{ position: 'absolute', bottom: 40, display: 'flex', alignItems: 'center', gap: 16, background: 'rgba(44,54,65,0.4)', backdropFilter: 'blur(12px)', padding: '8px 20px', borderRadius: 999, border: '1px solid rgba(68,71,77,0.2)' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+					<span style={{ fontFamily: 'var(--font-family-sans)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(143,144,151,1)' }}>System Load</span>
+					<div style={{ width: 120, height: 3, background: 'rgba(44,54,65,1)', borderRadius: 999, overflow: 'hidden' }}>
+						<motion.div animate={{ width: ['33%', '66%', '85%'] }} transition={{ duration: 4, ease: 'easeOut' }} style={{ height: '100%', background: '#adc6ff', borderRadius: 999 }} />
+					</div>
+				</div>
+				<div style={{ width: 1, height: 28, background: 'rgba(68,71,77,0.3)' }} />
+				<span style={{ fontFamily: 'var(--font-family-sans)', fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(197,198,205,0.6)' }}>Ver 4.2.0-Skyline</span>
 			</div>
 		</motion.div>
 	);
@@ -373,7 +392,7 @@ export default function Home() {
 			</AnimatePresence>
 
 			<div
-				style={{ position: 'fixed', inset: 0, background: '#111318', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+				style={{ position: 'fixed', inset: 0, background: '#0a141e', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
 				onMouseMove={handleMouseMove}
 			>
 				{/* Starfield */}
@@ -388,7 +407,7 @@ export default function Home() {
 						transform: 'translate(-50%, -50%)',
 						width: '140%',
 						height: '140%',
-						background: 'radial-gradient(circle at center, rgba(62,144,255,0.08) 0%, rgba(17,19,24,1) 70%)',
+						background: 'radial-gradient(circle at center, rgba(62,144,255,0.08) 0%, rgba(10,20,30,1) 70%)',
 						pointerEvents: 'none',
 						x: nebulaX,
 						y: nebulaY
@@ -411,7 +430,7 @@ export default function Home() {
 						alignItems: 'center',
 						padding: '0 32px',
 						height: 80,
-						background: 'rgba(17,19,24,0.6)',
+						background: 'rgba(5,15,25,0.6)',
 						backdropFilter: 'blur(20px) saturate(180%)',
 						WebkitBackdropFilter: 'blur(20px) saturate(180%)',
 						boxShadow: '0 20px 50px rgba(10,132,255,0.08)'
@@ -884,7 +903,7 @@ export default function Home() {
 						justifyContent: 'space-between',
 						alignItems: 'center',
 						borderTop: '1px solid rgba(255,255,255,0.04)',
-						background: '#111318',
+						background: '#050f19',
 						flexShrink: 0
 					}}
 				>

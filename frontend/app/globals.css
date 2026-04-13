@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Stitch "Flight Briefing App / Celestial Navigator" design tokens ── */
-  --color-surface:              #111318;
-  --color-surface-dim:          #111318;
-  --color-surface-low:          #1a1c20;
-  --color-surface-container:    #1e2024;
-  --color-surface-high:         #282a2e;
-  --color-surface-highest:      #333539;
-  --color-surface-bright:       #37393e;
-  --color-surface-lowest:       #0c0e12;
+  /* ── Stitch "AeroBrief" design tokens ── */
+  --color-surface:              #0a141e;
+  --color-surface-dim:          #0a141e;
+  --color-surface-low:          #131c27;
+  --color-surface-container:    #17202b;
+  --color-surface-high:         #212b36;
+  --color-surface-highest:      #2c3641;
+  --color-surface-bright:       #303a45;
+  --color-surface-lowest:       #050f19;
 
-  --color-primary:              #aac7ff;
-  --color-primary-container:    #3e90ff;
-  --color-on-primary:           #003064;
+  --color-primary:              #adc6ff;
+  --color-primary-container:    #00183c;
+  --color-on-primary:           #002e69;
 
   --color-secondary:            #53e16f;
   --color-secondary-container:  #05b046;
   --color-on-secondary:         #003911;
 
-  --color-tertiary:             #ffb868;
-  --color-tertiary-container:   #ce7f00;
-  --color-on-tertiary:          #482900;
+  --color-tertiary:             #ffb874;
+  --color-tertiary-container:   #291400;
+  --color-on-tertiary:          #4b2800;
 
   --color-error:                #ffb4ab;
   --color-error-container:      #93000a;
 
-  --color-on-surface:           #e2e2e8;
-  --color-on-surface-variant:   #c0c6d6;
-  --color-outline:              #8b91a0;
-  --color-outline-variant:      #414754;
+  --color-on-surface:           #d9e3f2;
+  --color-on-surface-variant:   #c5c6cd;
+  --color-outline:              #8f9097;
+  --color-outline-variant:      #44474d;
 
   /* Legacy aliases */
-  --color-accent-blue:   #aac7ff;
+  --color-accent-blue:   #adc6ff;
   --color-accent-teal:   #53e16f;
-  --color-accent-amber:  #ffb868;
+  --color-accent-amber:  #ffb874;
   --color-accent-red:    #ffb4ab;
 
   --font-family-display: var(--font-manrope), Manrope, sans-serif;
@@ -50,8 +50,8 @@
 
 html, body {
   height: 100%;
-  background: #111318;
-  color: #e2e2e8;
+  background: #0a141e;
+  color: #d9e3f2;
   font-family: var(--font-family-sans);
   overflow: hidden;
 }
@@ -60,7 +60,7 @@ html, body {
 div[style*="overflow"i] {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: rgba(170, 199, 255, 0.1) transparent;
+  scrollbar-color: rgba(173, 198, 255, 0.1) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -72,10 +72,10 @@ div[style*="overflow"i] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(170, 199, 255, 0.1);
+  background: rgba(173, 198, 255, 0.1);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(170, 199, 255, 0.18);
+  background: rgba(173, 198, 255, 0.18);
 }
